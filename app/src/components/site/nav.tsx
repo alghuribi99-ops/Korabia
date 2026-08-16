@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { CTA, NAV } from "../../site/content";
+import { getDict } from "../../site/content";
+import { LANG_META, NAV_HREFS, type Lang } from "../../site/types";
+import { LangSwitch } from "./lang-switch";
 
 export function BrandMark({ className = "" }: { className?: string }) {
   return (
@@ -8,7 +10,8 @@ export function BrandMark({ className = "" }: { className?: string }) {
   );
 }
 
-export function SiteNav() {
+export function SiteNav({ lang }: { lang: Lang }) {
+  const t = getDict(lang);
   const [compact, setCompact] = useState(false);
 
   useEffect(() => {
@@ -22,18 +25,16 @@ export function SiteNav() {
     <header
       className={
         "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-500 " +
-        (compact
-          ? "border-[#DCDCD6] bg-[#F2F2EF]/95 backdrop-blur"
-          : "border-transparent bg-transparent")
+        (compact ? "border-[#DCDCD6] bg-[#F2F2EF]/95 backdrop-blur" : "border-transparent bg-transparent")
       }
     >
       <div
         className={
-          "mx-auto flex max-w-[1400px] items-center justify-between px-5 transition-all duration-500 md:px-10 " +
+          "mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-5 transition-all duration-500 md:px-10 " +
           (compact ? "h-[64px]" : "h-[76px]")
         }
       >
-        <a href="#top" className="flex items-center gap-3">
+        <a href={LANG_META[lang].path} className="flex shrink-0 items-center gap-3">
           <BrandMark />
           <span
             className={
@@ -45,32 +46,37 @@ export function SiteNav() {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-8 lg:flex">
-          {NAV.map((item) => (
+        <nav className="hidden items-center gap-7 lg:flex">
+          {t.nav.map((label, i) => (
             <a
-              key={item.href}
-              href={item.href}
+              key={NAV_HREFS[i]}
+              href={NAV_HREFS[i]}
               className={
                 "k-underline relative text-[15px] transition-colors duration-500 " +
                 (compact ? "text-[#111619] hover:text-[#1F3FB8]" : "text-[#F2F2EF]/90 hover:text-white")
               }
             >
-              {item.label}
+              {label}
             </a>
           ))}
         </nav>
 
-        <a
-          href="#request"
-          className={
-            "border px-5 py-2.5 text-sm font-medium transition-colors duration-300 " +
-            (compact
-              ? "border-[#111619] text-[#111619] hover:bg-[#111619] hover:text-[#F2F2EF]"
-              : "border-[#F2F2EF]/70 text-[#F2F2EF] hover:bg-[#F2F2EF] hover:text-[#111619]")
-          }
-        >
-          {CTA.request}
-        </a>
+        <div className="flex items-center gap-5">
+          <div className="hidden xl:block">
+            <LangSwitch lang={lang} tone={compact ? "dark" : "light"} />
+          </div>
+          <a
+            href="#request"
+            className={
+              "shrink-0 border px-5 py-2.5 text-sm font-medium transition-colors duration-300 " +
+              (compact
+                ? "border-[#111619] text-[#111619] hover:bg-[#111619] hover:text-[#F2F2EF]"
+                : "border-[#F2F2EF]/70 text-[#F2F2EF] hover:bg-[#F2F2EF] hover:text-[#111619]")
+            }
+          >
+            {t.cta.request}
+          </a>
+        </div>
       </div>
     </header>
   );

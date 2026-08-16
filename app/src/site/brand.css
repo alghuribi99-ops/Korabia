@@ -1,11 +1,11 @@
 :root {
   --k-ground: #f2f2ef;
-  --k-surface: #ffffff;
   --k-ink: #111619;
   --k-muted: #6e767c;
   --k-line: #dcdcd6;
   --k-accent: #1f3fb8;
   --k-accent-deep: #16309a;
+  --k-font: "IBM Plex Sans", system-ui, sans-serif;
 }
 html[data-korabia] {
   background: var(--k-ground);
@@ -16,23 +16,27 @@ html[data-korabia] {
 html[data-korabia] body {
   background: var(--k-ground);
   color: var(--k-ink);
-  font-family: "IBM Plex Sans Arabic", system-ui, sans-serif;
+  font-family: var(--k-font);
   font-weight: 400;
   margin: 0;
   overflow-x: hidden;
 }
-html[data-korabia] :where(button, input, select, textarea, img, a, div, section) {
-  border-radius: 0;
-}
+/* Each locale only pulls the family its script actually needs. */
+[data-lang] { font-family: var(--k-font); }
+[data-lang="ar"] { --k-font: "IBM Plex Sans Arabic", system-ui, sans-serif; }
+[data-lang="ko"] { --k-font: "IBM Plex Sans KR", system-ui, sans-serif; }
+[data-lang="en"], [data-lang="ru"], [data-lang="es"] { --k-font: "IBM Plex Sans", system-ui, sans-serif; }
+html[data-korabia] :where(button, input, select, textarea, img, a, div, section) { border-radius: 0; }
 .k-mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-feature-settings: "tnum"; }
 .k-latin { font-family: "Outfit", system-ui, sans-serif; }
 .k-display { font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+[data-lang="ko"] .k-display { letter-spacing: -0.01em; line-height: 1.3; }
+[data-lang="ar"] .k-display { line-height: 1.25; }
 .k-body { line-height: 1.85; max-width: 62ch; }
 @keyframes k-rise { from { transform: translateY(14px); } to { transform: translateY(0); } }
 .k-rise { animation: k-rise 700ms cubic-bezier(0.16, 1, 0.3, 1) both; }
 @keyframes k-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 .k-grow { transform-origin: top center; animation: k-grow 1200ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-.k-d1 { animation-delay: 90ms; }
 .k-d2 { animation-delay: 180ms; }
 .k-d3 { animation-delay: 270ms; }
 .k-slice { transition: flex-grow 620ms cubic-bezier(0.16, 1, 0.3, 1); }
@@ -43,16 +47,19 @@ html[data-korabia] :where(button, input, select, textarea, img, a, div, section)
   background: currentColor; transform: scaleX(0); transform-origin: right center;
   transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+[dir="ltr"] .k-underline::after { transform-origin: left center; }
 .k-underline:hover::after, .k-underline:focus-visible::after { transform: scaleX(1); }
 .k-rule {
   display: block; height: 1px; background: var(--k-ink); transform: scaleX(0.22);
   transform-origin: right center; transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+[dir="ltr"] .k-rule { transform-origin: left center; }
 .k-card:hover .k-rule, .k-card:focus-within .k-rule { transform: scaleX(1); }
 .k-card-img { transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1); }
 .k-card:hover .k-card-img { transform: scale(1.05); }
 .k-arrow { transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1); }
 .k-cta-solid:hover .k-arrow { transform: translateX(-6px); }
+[dir="ltr"] .k-cta-solid:hover .k-arrow { transform: translateX(6px); }
 html[data-korabia] summary { list-style: none; }
 html[data-korabia] summary::-webkit-details-marker { display: none; }
 .k-minus { display: none; }
@@ -69,6 +76,7 @@ details[open] .k-sign { color: var(--k-accent); }
 .k-field::placeholder { color: rgba(242, 242, 239, 0.46); }
 .k-field:focus { border-bottom-color: #7d95e8; }
 .k-field option { color: #111619; }
+.k-lang-current { color: var(--k-accent); }
 @media (prefers-reduced-motion: reduce) {
   html[data-korabia] { scroll-behavior: auto; }
   .k-rise, .k-grow { animation: none !important; transform: none !important; }
