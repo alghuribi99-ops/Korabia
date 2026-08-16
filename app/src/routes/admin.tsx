@@ -54,7 +54,7 @@ function Admin() {
   const [password, setPassword] = useState("");
   const [data, setData] = useState<AdminData | null>(null);
   const [range, setRange] = useState<(typeof RANGES)[number]>(30);
-  const [status, setStatus] = useState<"idle" | "loading" | "bad" | "storage">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "bad" | "storage" | "locked">("idle");
 
   const fetchData = useCallback(async (secret: string, days: (typeof RANGES)[number]) => {
     setStatus("loading");
@@ -70,7 +70,7 @@ function Admin() {
         }
       } else {
         setData(null);
-        setStatus(res.reason === "auth" ? "bad" : "storage");
+        setStatus(res.reason === "auth" ? "bad" : res.reason === "locked" ? "locked" : "storage");
       }
     } catch {
       setStatus("bad");
@@ -134,6 +134,11 @@ function Admin() {
           </label>
           {status === "bad" ? (
             <p className="mt-4 text-[13px] text-[#B3261E]">كلمة المرور غير صحيحة.</p>
+          ) : null}
+          {status === "locked" ? (
+            <p className="mt-4 text-[13px] text-[#B3261E]">
+              محاولات كثيرة خاطئة. انتظر عشر دقائق ثم حاول مرة أخرى.
+            </p>
           ) : null}
           {status === "storage" ? (
             <p className="mt-4 text-[13px] text-[#B3261E]">قاعدة البيانات غير متاحة الآن.</p>

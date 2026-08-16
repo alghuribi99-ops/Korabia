@@ -38,7 +38,7 @@ export type AdminData = {
   leads: Lead[];
 };
 
-export type AdminResult = AdminData | { ok: false; reason: "auth" | "storage" };
+export type AdminResult = AdminData | { ok: false; reason: "auth" | "storage" | "locked" };
 
 /** Length independent comparison, so a wrong guess leaks nothing by timing. */
 function sameSecret(a: string, b: string) {
@@ -47,6 +47,13 @@ function sameSecret(a: string, b: string) {
   for (let i = 0; i < a.length; i += 1) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return diff === 0;
 }
+
+const ENSURE_ATTEMPTS =
+  "CREATE TABLE IF NOT EXISTS admin_attempts (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at TEXT NOT NULL DEFAULT (datetime('now')))";
+
+/** A short password deserves a real brake, so guessing is rate limited. */
+const MAX_FAILURES = 8;
+const WINDOW = "-10 minutes";
 
 const ENSURE_VIEWS =
   "CREATE TABLE IF NOT EXISTS page_views (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, lang TEXT, country TEXT, referrer TEXT, device TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))";
@@ -60,11 +67,33 @@ export const loadAdminData = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }): Promise<AdminResult> => {
     const { DB, ADMIN_PASSWORD } = bindings();
+
+    if (DB) await DB.prepare(ENSURE_ATTEMPTS).run();
+
+    if (DB) {
+      const recent =
+        (
+          await DB.prepare(
+            "SELECT COUNT(*) AS n FROM admin_attempts WHERE created_at >= datetime('now', ?)",
+          )
+            .bind(WINDOW)
+            .first<{ n: number }>()
+        )?.n ?? 0;
+      if (recent >= MAX_FAILURES) {
+        await new Promise((r) => setTimeout(r, 600));
+        return { ok: false, reason: "locked" };
+      }
+    }
+
     if (!ADMIN_PASSWORD || !sameSecret(data.password, ADMIN_PASSWORD)) {
-      await new Promise((r) => setTimeout(r, 400));
+      if (DB) await DB.prepare("INSERT INTO admin_attempts DEFAULT VALUES").run();
+      await new Promise((r) => setTimeout(r, 600));
       return { ok: false, reason: "auth" };
     }
     if (!DB) return { ok: false, reason: "storage" };
+
+    // A good password clears the brake for the next visit.
+    await DB.prepare("DELETE FROM admin_attempts").run();
 
     await DB.prepare(ENSURE_VIEWS).run();
 
