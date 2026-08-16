@@ -1,7 +1,8 @@
 {
-  "og_title": null,
-  "og_description": null,
-  "og_image_url": null,
-  "favicon_url": null,
+  "og_title": "كورابيا | استيراد وتصدير السيارات من كوريا والصين",
+  "og_description": "نبحث لك عن السيارة المناسبة في المزادات والمعارض الكورية، نفحصها فحصاً موثقاً، ونشحنها من ميناء إنشون إلى مينائك بدون وسطاء ومع متابعة كاملة حتى الاستلام.",
+  "og_image_url": "/assets/og-cover.webp",
+  "marketplace_cover_url": "/assets/og-cover.webp",
+  "favicon_url": "/assets/favicon.png",
   "og_video_url": null
 }
