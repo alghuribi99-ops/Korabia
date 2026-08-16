@@ -1,6 +1,7 @@
 import { getDict } from "../../site/content";
 import { CONTACT, LANG_META, NAV_HREFS, whatsappLink, type Lang } from "../../site/types";
 import { LangSwitch } from "./lang-switch";
+import { Registration } from "./registration";
 import { BrandMark } from "./nav";
 
 export function SiteFooter({ lang }: { lang: Lang }) {
@@ -69,6 +70,8 @@ export function SiteFooter({ lang }: { lang: Lang }) {
             </ul>
           </div>
         </div>
+
+        <Registration lang={lang} />
 
         <p className="k-mono mt-14 text-xs text-[#F2F2EF]/40">
           {new Date().getFullYear()} {t.footer.rights}

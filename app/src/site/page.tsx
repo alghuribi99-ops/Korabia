@@ -10,7 +10,7 @@ import { Services } from "../components/site/services";
 import { Vehicles } from "../components/site/vehicles";
 import { Why } from "../components/site/why";
 import { getDict } from "./content";
-import { CONTACT, LANG_META, SITE_ORIGIN, type Lang } from "./types";
+import { CONTACT, LANG_META, LEGAL, SITE_ORIGIN, type Lang } from "./types";
 
 function jsonLd(lang: Lang) {
   const t = getDict(lang);
@@ -24,13 +24,28 @@ function jsonLd(lang: Lang) {
         "@type": "AutoDealer",
         "@id": SITE_ORIGIN + "/#org",
         name: "Korabia",
+        legalName: LEGAL.tradeName,
         url,
+        taxID: LEGAL.regNumber,
+        identifier: {
+          "@type": "PropertyValue",
+          name: "KR Business Registration Number",
+          value: LEGAL.regNumber,
+        },
+        foundingDate: LEGAL.since,
+        founder: { "@type": "Person", name: LEGAL.representative },
         description: t.meta.description,
         email: CONTACT.email,
         telephone: "+" + CONTACT.whatsappDigits,
         image: SITE_ORIGIN + "/assets/og-cover.webp",
         areaServed: ["SA", "AE", "KW", "QA", "BH", "OM", "JO", "IQ", "RU", "KZ", "ES", "KR"],
-        address: { "@type": "PostalAddress", addressLocality: "Incheon", addressCountry: "KR" },
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "17-7 Munhak-gil 109beon-gil, Michuhol-gu",
+          addressLocality: "Incheon",
+          addressRegion: "Incheon",
+          addressCountry: "KR",
+        },
         sameAs: CONTACT.social.map((s) => s.href),
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",

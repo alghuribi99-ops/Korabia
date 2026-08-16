@@ -1,5 +1,5 @@
 import { getDict } from "../../site/content";
-import type { Lang } from "../../site/types";
+import { LEGAL, type Lang } from "../../site/types";
 
 export function Why({ lang }: { lang: Lang }) {
   const t = getDict(lang);
@@ -11,6 +11,15 @@ export function Why({ lang }: { lang: Lang }) {
           <p className="k-mono mb-4 text-xs uppercase tracking-[0.22em] text-[#1F3FB8]">{t.why.eyebrow}</p>
           <h2 className="k-display max-w-[20ch] text-3xl md:text-5xl">{t.why.title}</h2>
           <p className="k-body mt-6 text-[#6E767C]">{t.why.body}</p>
+
+          <p className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-[#DCDCD6] pt-5 text-[14px] text-[#111619]">
+            <span className="font-medium">{t.legal.badge}</span>
+            <span aria-hidden="true" className="text-[#DCDCD6]">/</span>
+            <span className="text-[#6E767C]">{t.legal.labels.regNumber}</span>
+            <span className="k-mono" dir="ltr">
+              {LEGAL.regNumber}
+            </span>
+          </p>
         </div>
 
         <div className="relative -me-5 md:-me-10 md:mt-10">
