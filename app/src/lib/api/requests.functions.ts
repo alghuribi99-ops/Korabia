@@ -29,6 +29,14 @@ export const submitCarRequest = createServerFn({ method: "POST" })
       "CREATE TABLE IF NOT EXISTS car_requests (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, phone TEXT NOT NULL, country TEXT NOT NULL, category TEXT NOT NULL, model TEXT NOT NULL, budget TEXT, notes TEXT, lang TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))",
     ).run();
 
+    // The table predates the lang column, so widen it defensively. SQLite has
+    // no ADD COLUMN IF NOT EXISTS, and a repeat call is a caught no-op.
+    try {
+      await DB.prepare("ALTER TABLE car_requests ADD COLUMN lang TEXT").run();
+    } catch {
+      /* column already present */
+    }
+
     await DB.prepare(
       "INSERT INTO car_requests (name, phone, country, category, model, budget, notes, lang) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
     )
