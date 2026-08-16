@@ -150,7 +150,8 @@ function Admin() {
     );
   }
 
-  const nf = new Intl.NumberFormat("ar-EG");
+  // Latin digits everywhere, so the tiles match the mono figures in the charts.
+  const nf = new Intl.NumberFormat("en-US");
 
   return (
     <div data-lang="ar" dir="rtl" className="min-h-dvh pb-20">
