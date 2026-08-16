@@ -9,6 +9,7 @@ export function ViewPing({ lang }: { lang: Lang }) {
       path: LANG_META[lang].path,
       lang,
       referrer: document.referrer || "",
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
     });
     void fetch("/api/hit", {
       method: "POST",

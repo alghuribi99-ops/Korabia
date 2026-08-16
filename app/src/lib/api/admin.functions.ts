@@ -57,7 +57,7 @@ const MAX_FAILURES = 8;
 const WINDOW = "-10 minutes";
 
 const ENSURE_VIEWS =
-  "CREATE TABLE IF NOT EXISTS page_views (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, lang TEXT, country TEXT, city TEXT, region TEXT, referrer TEXT, device TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))";
+  "CREATE TABLE IF NOT EXISTS page_views (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, lang TEXT, country TEXT, city TEXT, region TEXT, tz TEXT, referrer TEXT, device TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))";
 
 export const loadAdminData = createServerFn({ method: "POST" })
   .inputValidator(
@@ -97,7 +97,7 @@ export const loadAdminData = createServerFn({ method: "POST" })
     await DB.prepare("DELETE FROM admin_attempts").run();
 
     await DB.prepare(ENSURE_VIEWS).run();
-    for (const column of ["city", "region"]) {
+    for (const column of ["city", "region", "tz"]) {
       try {
         await DB.prepare("ALTER TABLE page_views ADD COLUMN " + column + " TEXT").run();
       } catch {
@@ -164,7 +164,7 @@ export const loadAdminData = createServerFn({ method: "POST" })
     );
     const byCity = bucket(
       await many<{ key: string | null; n: number }>(
-        "SELECT (CASE WHEN city IS NULL OR city = '' THEN NULL ELSE city || CASE WHEN country IS NULL THEN '' ELSE ', ' || country END END) AS key, COUNT(*) AS n FROM page_views WHERE created_at >= datetime('now', ?) AND city IS NOT NULL AND city != '' GROUP BY key ORDER BY n DESC LIMIT 12",
+        "SELECT COALESCE(NULLIF(city, ''), NULLIF(tz, '')) AS key, COUNT(*) AS n FROM page_views WHERE created_at >= datetime('now', ?) AND COALESCE(NULLIF(city, ''), NULLIF(tz, '')) IS NOT NULL GROUP BY key ORDER BY n DESC LIMIT 12",
         since,
       ),
     );

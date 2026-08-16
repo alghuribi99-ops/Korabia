@@ -16,7 +16,7 @@ export const Route = createFileRoute("/api/hit")({
         const { DB } = bindings();
         if (!DB) return new Response(null, { status: 204 });
 
-        let body: { path?: string; lang?: string; referrer?: string } = {};
+        let body: { path?: string; lang?: string; referrer?: string; tz?: string } = {};
         try {
           body = (await request.json()) as typeof body;
         } catch {
@@ -48,6 +48,8 @@ export const Route = createFileRoute("/api/hit")({
         const headerCountry = (request.headers.get("cf-ipcountry") ?? "").slice(0, 4);
         const country = pick("country") ?? (headerCountry || null);
         const city = pick("city");
+        const rawTz = String(body.tz ?? "").trim();
+        const tz = /^[A-Za-z_+\-/]{3,48}$/.test(rawTz) ? rawTz : null;
         const region = pick("region");
         const ua = request.headers.get("user-agent") ?? "";
         const device = /Mobi|Android|iPhone|iPod/i.test(ua)
@@ -58,9 +60,9 @@ export const Route = createFileRoute("/api/hit")({
 
         try {
           await DB.prepare(
-            "CREATE TABLE IF NOT EXISTS page_views (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, lang TEXT, country TEXT, city TEXT, region TEXT, referrer TEXT, device TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))",
+            "CREATE TABLE IF NOT EXISTS page_views (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, lang TEXT, country TEXT, city TEXT, region TEXT, tz TEXT, referrer TEXT, device TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))",
           ).run();
-          for (const column of ["city", "region"]) {
+          for (const column of ["city", "region", "tz"]) {
             try {
               await DB.prepare("ALTER TABLE page_views ADD COLUMN " + column + " TEXT").run();
             } catch {
@@ -68,9 +70,9 @@ export const Route = createFileRoute("/api/hit")({
             }
           }
           await DB.prepare(
-            "INSERT INTO page_views (path, lang, country, city, region, referrer, device) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO page_views (path, lang, country, city, region, tz, referrer, device) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
           )
-            .bind(path, lang, country, city, region, referrer, device)
+            .bind(path, lang, country, city, region, tz, referrer, device)
             .run();
         } catch {
           /* analytics must never break a page view */

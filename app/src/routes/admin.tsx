@@ -45,6 +45,13 @@ function countryLabel(code: string) {
   }
 }
 
+/** Turns an IANA zone such as Asia/Riyadh into a readable place name. */
+function zoneLabel(key: string) {
+  if (!key.includes("/")) return key;
+  const city = key.split("/").pop() ?? key;
+  return city.replace(/_/g, " ");
+}
+
 function csvCell(v: unknown) {
   const s = String(v ?? "");
   return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
@@ -244,7 +251,12 @@ function Admin() {
             <BarList title="الزيارات حسب الدولة" rows={data.byCountry} renderKey={countryLabel} empty="لا توجد زيارات بعد." />
           </div>
           <div className="bg-white p-6">
-            <BarList title="الزيارات حسب المدينة" rows={data.byCity} empty="ما توفرت بيانات المدينة بعد." />
+            <BarList
+              title="المنطقة والمدينة التقريبية"
+              rows={data.byCity}
+              renderKey={zoneLabel}
+              empty="ما وصلت بيانات كافية بعد."
+            />
           </div>
           <div className="bg-white p-6">
             <BarList
