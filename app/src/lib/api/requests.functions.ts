@@ -11,6 +11,7 @@ export const carRequestSchema = z.object({
   model: z.string().trim().min(1).max(160),
   budget: z.string().trim().max(80).default(""),
   notes: z.string().trim().max(1200).default(""),
+  lang: z.string().trim().max(8).default("ar"),
 });
 
 export type CarRequestInput = z.infer<typeof carRequestSchema>;
@@ -25,13 +26,13 @@ export const submitCarRequest = createServerFn({ method: "POST" })
     }
 
     await DB.prepare(
-      "CREATE TABLE IF NOT EXISTS car_requests (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, phone TEXT NOT NULL, country TEXT NOT NULL, category TEXT NOT NULL, model TEXT NOT NULL, budget TEXT, notes TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))",
+      "CREATE TABLE IF NOT EXISTS car_requests (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, phone TEXT NOT NULL, country TEXT NOT NULL, category TEXT NOT NULL, model TEXT NOT NULL, budget TEXT, notes TEXT, lang TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))",
     ).run();
 
     await DB.prepare(
-      "INSERT INTO car_requests (name, phone, country, category, model, budget, notes) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO car_requests (name, phone, country, category, model, budget, notes, lang) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
     )
-      .bind(data.name, data.phone, data.country, data.category, data.model, data.budget, data.notes)
+      .bind(data.name, data.phone, data.country, data.category, data.model, data.budget, data.notes, data.lang)
       .run();
 
     return { ok: true as const };

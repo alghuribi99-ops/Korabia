@@ -1,7 +1,11 @@
-import { CONTACT, CTA, FOOTER, NAV, whatsappLink } from "../../site/content";
+import { getDict } from "../../site/content";
+import { CONTACT, LANG_META, NAV_HREFS, whatsappLink, type Lang } from "../../site/types";
+import { LangSwitch } from "./lang-switch";
 import { BrandMark } from "./nav";
 
-export function SiteFooter() {
+export function SiteFooter({ lang }: { lang: Lang }) {
+  const t = getDict(lang);
+
   return (
     <footer className="bg-[#111619] pb-14 pt-16 text-[#F2F2EF] md:pb-16 md:pt-20">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
@@ -11,39 +15,45 @@ export function SiteFooter() {
               <BrandMark className="brightness-0 invert" />
               <span className="k-latin text-lg font-semibold tracking-[0.14em]">KORABIA</span>
             </div>
-            <p className="k-body mt-5 text-[15px] text-[#F2F2EF]/65">{FOOTER.tagline}</p>
+            <p className="k-body mt-5 text-[15px] text-[#F2F2EF]/65">{t.footer.tagline}</p>
             <a
-              href={whatsappLink("السلام عليكم، أبي أستفسر عن خدمات كورابيا")}
+              href={whatsappLink(t.request.waGeneral)}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-7 inline-block border border-[#F2F2EF]/40 px-7 py-3.5 text-[15px] font-medium transition-all hover:border-[#F2F2EF] hover:shadow-[inset_0_0_0_1px_#F2F2EF]"
             >
-              {CTA.whatsapp}
+              {t.cta.whatsapp}
             </a>
+            <div className="mt-9">
+              <h3 className="k-latin text-sm text-[#F2F2EF]/45">{t.footer.languagesHeading}</h3>
+              <div className="mt-4">
+                <LangSwitch lang={lang} tone="onInk" />
+              </div>
+            </div>
           </div>
 
           <div>
-            <h3 className="k-latin text-sm text-[#F2F2EF]/45">Contact</h3>
+            <h3 className="k-latin text-sm text-[#F2F2EF]/45">{t.footer.contactHeading}</h3>
             <ul className="mt-5 space-y-2.5 text-[15px] text-[#F2F2EF]/75">
-              <li dir="ltr" className="text-right">{CONTACT.whatsappDisplay}</li>
+              <li dir="ltr" className="text-start">{CONTACT.whatsappDisplay}</li>
               <li>
                 <a href={"mailto:" + CONTACT.email} className="k-underline relative">
                   {CONTACT.email}
                 </a>
               </li>
-              <li>{CONTACT.city}</li>
-              <li className="pt-2 text-[13px] text-[#F2F2EF]/50">{CONTACT.hoursKr}</li>
-              <li className="text-[13px] text-[#F2F2EF]/50">{CONTACT.hoursSa}</li>
+              <li>{t.hours.city}</li>
+              <li className="pt-2 text-[13px] text-[#F2F2EF]/50">{t.hours.kr}</li>
+              <li className="text-[13px] text-[#F2F2EF]/50">{t.hours.sa}</li>
             </ul>
           </div>
 
           <div>
-            <h3 className="k-latin text-sm text-[#F2F2EF]/45">Sections</h3>
+            <h3 className="k-latin text-sm text-[#F2F2EF]/45">{t.footer.sectionsHeading}</h3>
             <ul className="mt-5 space-y-2.5 text-[15px] text-[#F2F2EF]/75">
-              {NAV.map((item) => (
-                <li key={item.href}>
-                  <a href={item.href} className="k-underline relative">
-                    {item.label}
+              {t.nav.map((label, i) => (
+                <li key={NAV_HREFS[i]}>
+                  <a href={NAV_HREFS[i]} className="k-underline relative">
+                    {label}
                   </a>
                 </li>
               ))}
@@ -61,26 +71,28 @@ export function SiteFooter() {
         </div>
 
         <p className="k-mono mt-14 text-xs text-[#F2F2EF]/40">
-          {new Date().getFullYear()} {FOOTER.rights}
+          {new Date().getFullYear()} {t.footer.rights}
         </p>
       </div>
+      <span hidden>{LANG_META[lang].htmlLang}</span>
     </footer>
   );
 }
 
-export function MobileActionBar() {
+export function MobileActionBar({ lang }: { lang: Lang }) {
+  const t = getDict(lang);
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-px border-t border-[#111619]/15 bg-[#DCDCD6] lg:hidden">
       <a
-        href={whatsappLink("السلام عليكم، أبي أستفسر عن استيراد سيارة من كوريا")}
+        href={whatsappLink(t.request.waGeneral)}
         target="_blank"
         rel="noopener noreferrer"
         className="bg-[#F2F2EF] py-4 text-center text-sm font-medium text-[#111619]"
       >
-        {CTA.whatsapp}
+        {t.cta.whatsapp}
       </a>
       <a href="#request" className="bg-[#1F3FB8] py-4 text-center text-sm font-medium text-white">
-        {CTA.request}
+        {t.cta.request}
       </a>
     </div>
   );
