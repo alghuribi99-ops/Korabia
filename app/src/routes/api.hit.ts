@@ -45,7 +45,8 @@ export const Route = createFileRoute("/api/hit")({
           const v = geo[key];
           return typeof v === "string" && v.trim() ? v.trim().slice(0, 60) : null;
         };
-        const country = pick("country") ?? (request.headers.get("cf-ipcountry") ?? "").slice(0, 4) || null;
+        const headerCountry = (request.headers.get("cf-ipcountry") ?? "").slice(0, 4);
+        const country = pick("country") ?? (headerCountry || null);
         const city = pick("city");
         const region = pick("region");
         const ua = request.headers.get("user-agent") ?? "";
