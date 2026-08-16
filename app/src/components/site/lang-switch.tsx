@@ -1,4 +1,4 @@
-import { LANGS, LANG_META, type Lang } from "../../site/types";
+import { LANGS, LANG_META, SUGGEST_KEY, type Lang } from "../../site/types";
 
 /** Compact locale row. Plain anchors so every locale is a real crawlable URL. */
 export function LangSwitch({
@@ -27,6 +27,13 @@ export function LangSwitch({
               lang={meta.htmlLang}
               hrefLang={meta.htmlLang}
               aria-current={active ? "page" : undefined}
+              onClick={() => {
+                try {
+                  window.localStorage.setItem(SUGGEST_KEY, "1");
+                } catch {
+                  /* storage blocked, the hint simply stays available */
+                }
+              }}
               className={
                 "k-underline relative text-[13px] transition-colors " +
                 (active ? "k-lang-current font-medium" : base)

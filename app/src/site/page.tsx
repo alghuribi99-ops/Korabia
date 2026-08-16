@@ -3,6 +3,7 @@ import { Faq } from "../components/site/faq";
 import { MobileActionBar, SiteFooter } from "../components/site/footer";
 import { Hero } from "../components/site/hero";
 import { Korea } from "../components/site/korea";
+import { LangSuggest } from "../components/site/lang-suggest";
 import { SiteNav } from "../components/site/nav";
 import { Process } from "../components/site/process";
 import { RequestForm } from "../components/site/request-form";
@@ -90,6 +91,7 @@ export function SitePage({ lang }: { lang: Lang }) {
       </main>
       <SiteFooter lang={lang} />
       <MobileActionBar lang={lang} />
+      <LangSuggest lang={lang} />
       <div aria-hidden="true" className="h-14 lg:hidden" />
     </div>
   );

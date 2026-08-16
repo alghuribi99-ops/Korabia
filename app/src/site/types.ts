@@ -15,6 +15,21 @@ export const LANG_META: Record<
   ko: { path: "/ko", label: "한국어", htmlLang: "ko", ogLocale: "ko_KR", dir: "ltr" },
 };
 
+/**
+ * Copy for the language hint bar. Written in the language being SUGGESTED, not
+ * the language of the page the visitor landed on, so it reads to them.
+ * `key` is the localStorage flag that keeps the hint from returning.
+ */
+export const SUGGEST_KEY = "korabia:lang-hint";
+
+export const SUGGEST: Record<Lang, { text: string; action: string; dismiss: string }> = {
+  ar: { text: "هذا الموقع متوفر بالعربية", action: "افتح النسخة العربية", dismiss: "إغلاق" },
+  en: { text: "This site is also available in English", action: "Switch to English", dismiss: "Dismiss" },
+  ru: { text: "Сайт доступен на русском языке", action: "Перейти на русский", dismiss: "Закрыть" },
+  es: { text: "Este sitio también está en español", action: "Cambiar a español", dismiss: "Cerrar" },
+  ko: { text: "이 사이트는 한국어로도 보실 수 있습니다", action: "한국어로 보기", dismiss: "닫기" },
+};
+
 export const SITE_ORIGIN = "https://korabia-motors.higgsfield.app";
 
 export const CONTACT = {
