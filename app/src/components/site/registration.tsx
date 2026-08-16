@@ -14,7 +14,6 @@ export function Registration({ lang }: { lang: Lang }) {
     { label: t.legal.labels.regNumber, value: LEGAL.regNumber, mono: true },
     { label: t.legal.labels.tradeName, value: LEGAL.tradeName },
     { label: t.legal.labels.representative, value: LEGAL.representative },
-    { label: t.legal.labels.since, value: LEGAL.since, mono: true },
     {
       label: t.legal.labels.address,
       value: t.legal.address,

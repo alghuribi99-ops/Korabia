@@ -32,7 +32,6 @@ function jsonLd(lang: Lang) {
           name: "KR Business Registration Number",
           value: LEGAL.regNumber,
         },
-        foundingDate: LEGAL.since,
         founder: { "@type": "Person", name: LEGAL.representative },
         description: t.meta.description,
         email: CONTACT.email,
