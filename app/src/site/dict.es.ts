@@ -1,0 +1,129 @@
+import type { Dict } from "./types";
+
+export const es: Dict = {
+  meta: {
+    title: "Korabia | Exportación de coches desde Corea y China a Oriente Medio",
+    description:
+      "Buscamos el coche adecuado en subastas y concesionarios de Corea, lo inspeccionamos sobre el terreno con informe documentado y lo enviamos desde Incheon a tu puerto sin intermediarios y con seguimiento hasta la entrega.",
+    keywords:
+      "importar coches de Corea, subasta de coches coreana, exportación de coches Corea, envío de coches desde Incheon, coches coreanos de segunda mano, importar coches de China, korabia",
+  },
+  hours: { kr: "10:00 a 20:00 hora de Corea", sa: "04:00 a 14:00 hora del Golfo", city: "Incheon, Corea del Sur" },
+  cta: { request: "Solicitar un coche", whatsapp: "Escríbenos por WhatsApp" },
+  nav: ["Servicios", "Cómo trabajamos", "Vehículos", "Servicios en Corea", "Preguntas"],
+  hero: {
+    headline: ["Tu coche desde Corea,", "sin intermediarios."],
+    sub: "Lo buscamos, lo inspeccionamos sobre el terreno y lo enviamos desde Incheon a tu puerto con seguimiento completo hasta la entrega.",
+    alt: "Filas de coches nuevos en el muelle de una terminal de exportación coreana con un buque portacoches detrás",
+  },
+  services: {
+    eyebrow: "Services",
+    title: "Cuatro servicios, cada uno con un responsable",
+    items: [
+      { title: "Subasta de coches en Corea", en: "Auction", body: "Acudimos a la subasta en tu nombre tras inspeccionar y tasar el coche, y pujamos hasta un techo de precio que tú fijas de antemano.", alt: "Sala de subasta de coches en Corea con filas de vehículos expuestos" },
+      { title: "Inspección y tasación", en: "Inspection", body: "Un informe con fotos del estado de carrocería, motor, espesor de pintura e historial del vehículo, antes de cualquier compromiso económico.", alt: "Un inspector midiendo el espesor de pintura de un coche" },
+      { title: "Envío y exportación", en: "Shipping", body: "Reserva del envío, despacho desde el puerto de Incheon y preparación y seguimiento de la documentación hasta el puerto de destino.", alt: "Un coche en la explanada de la terminal de exportación con grúas portuarias detrás" },
+      { title: "Coordinación comercial", en: "Sourcing", body: "Recambios, mercancía al por mayor y productos coreanos, coordinados directamente con proveedores y con contratos claros.", alt: "Una calle de Seúl a primera hora de la mañana" },
+    ],
+  },
+  process: {
+    title: "De la subasta a tu puerta",
+    intro: "Cuatro etapas claras, y en cada una sabes dónde está tu coche.",
+    steps: [
+      { n: "01", title: "Petición y especificaciones", body: "Tú marcas modelo, año y presupuesto, y nosotros preseleccionamos opciones reales disponibles en el mercado coreano." },
+      { n: "02", title: "Inspección y puja", body: "Inspeccionamos el coche en persona y te enviamos el informe, y después pujamos en la subasta hasta el techo acordado." },
+      { n: "03", title: "Despacho y envío", body: "Preparamos los documentos de exportación y reservamos el envío desde Incheon al puerto de destino que indiques." },
+      { n: "04", title: "Entrega", body: "Seguimos el envío contigo hasta que llega y te entregamos todos los documentos que pedirá tu aduana." },
+    ],
+    closing: "Empieza por la primera etapa",
+  },
+  vehicles: {
+    title: "Importamos la categoría que encaja con tu uso",
+    intro:
+      "La disponibilidad cambia cada semana según las subastas y los concesionarios. Dinos la categoría y el modelo y volvemos con opciones reales disponibles ahora.",
+    items: [
+      { title: "Berlina familiar", en: "Family Sedan", note: "La más pedida en las subastas coreanas", alt: "Berlina familiar en color grafito oscuro" },
+      { title: "SUV y todocamino", en: "SUV", note: "Hay opciones de siete plazas", alt: "SUV familiar en blanco perla" },
+      { title: "Berlina de representación", en: "Executive Sedan", note: "Revisión adicional de motor y cambio", alt: "Berlina de representación larga en azul marino" },
+      { title: "Eléctricos", en: "Electric", note: "Incluimos informe de salud de la batería", alt: "Todocamino eléctrico en gris claro" },
+      { title: "Furgoneta comercial", en: "Commercial Van", note: "Para empresas y uso profesional", alt: "Furgoneta comercial blanca" },
+      { title: "Pickup", en: "Pickup", note: "Doble cabina y tracción total", alt: "Pickup de doble cabina en gris oscuro" },
+    ],
+  },
+  why: {
+    eyebrow: "Por qué Korabia",
+    title: "Transparencia antes que precio",
+    body: "Casi todos los problemas de importación empiezan por un dato que falta: un siniestro no declarado, un cuentakilómetros que no cuadra o una tasa que aparece después del envío. Nuestro método es simple. Tienes el cuadro completo antes de pagar, y la decisión sigue siendo tuya.",
+    macroAlt: "Plano cercano del borde de un faro y la pintura de un coche durante la inspección",
+    pillars: [
+      { title: "Sin intermediarios", body: "Tratamos directamente con concesionarios y subastas en Corea, así que no hay margen de agente escondido en el precio." },
+      { title: "Inspección documentada", body: "Fotos, vídeo e informe escrito del estado te llegan antes de la compra, no después." },
+      { title: "Equipo sobre el terreno", body: "Nuestro equipo está en Incheon, lo que significa presencia real en la subasta y control directo del envío." },
+    ],
+  },
+  korea: {
+    title: "Qué más resolvemos en Corea",
+    intro: "La misma empresa que envía tu coche puede coordinar el resto mientras estás en Corea.",
+    items: [
+      { title: "Traductor", en: "Translator", body: "Interpretación de coreano para reuniones, concesionarios y citas oficiales." },
+      { title: "Chófer privado", en: "Personal Driver", body: "Desplazamientos por Seúl, Incheon y las ciudades industriales con un conductor que conoce la ruta." },
+      { title: "Alojamiento", en: "Residential", body: "Apartamentos y hoteles cerca de donde necesitas estar y por el tiempo que te quedes." },
+      { title: "Plan de viaje", en: "Travel Plan", body: "Un programa hecho a tus días y tus intereses, no un tour prefabricado." },
+      { title: "Coordinador", en: "Coordinator", body: "Una sola persona responsable de tu agenda y tus traslados durante todo el viaje." },
+      { title: "Hospitales", en: "Hospitals", body: "Citas médicas en Corea, con acompañamiento e interpretación durante la visita." },
+      { title: "Estudios", en: "Study", body: "Admisión en institutos de idiomas y universidades, y los trámites de residencia." },
+      { title: "Productos", en: "Products", body: "Compra y envío de productos coreanos y recambios, al por mayor o en cantidades pequeñas." },
+    ],
+  },
+  request: {
+    eyebrow: "Solicitud de coche",
+    title: "Dinos qué buscas y volvemos con opciones",
+    sub: "Rellena la solicitud y te escribimos por WhatsApp con opciones y precios orientativos. En esta fase no te comprometes a nada.",
+    fields: {
+      name: "Nombre",
+      phone: "Número de WhatsApp con prefijo del país",
+      country: "País y puerto de destino",
+      category: "Categoría de vehículo",
+      model: "Modelo y año que buscas",
+      budget: "Presupuesto orientativo",
+      notes: "Algo más",
+    },
+    placeholders: {
+      phone: "34600000000",
+      country: "España, puerto de Valencia",
+      model: "Sonata 2021 o similar",
+      budget: "En dólares o en moneda local",
+      notes: "Color preferido, límite de kilómetros, lo que te importe",
+    },
+    other: "Otra cosa",
+    optional: "opcional",
+    submit: "Enviar solicitud",
+    sending: "Enviando",
+    successTitle: "Tenemos tu solicitud",
+    successBody: "Te contactamos en el número que nos has dado. Quieres respuesta más rápida? Abre el chat directamente.",
+    errorBody: "No hemos podido recibir la solicitud ahora. Inténtalo de nuevo o escríbenos por WhatsApp.",
+    another: "Enviar otra solicitud",
+    waSummary: { heading: "Solicitud de coche desde la web", name: "Nombre", category: "Categoría", wanted: "Busca", destination: "Destino", budget: "Presupuesto" },
+    waGeneral: "Hola, quiero información sobre importar un coche desde Corea",
+  },
+  faq: {
+    title: "Lo que pregunta todo cliente antes del primer pedido",
+    items: [
+      { q: "Cuánto tarda en llegar el coche?", a: "Depende del puerto de destino y del calendario de la naviera. Te damos una estimación clara antes de reservar el envío y te avisamos si el calendario cambia." },
+      { q: "Puedo ver el coche antes de comprarlo?", a: "Sí. Enviamos fotos, vídeo y un informe escrito con el estado de carrocería y motor, el espesor de pintura, el cuentakilómetros y el historial, antes de cualquier pago." },
+      { q: "Cómo funciona el pago?", a: "Por etapas ligadas a pasos concretos: una al confirmar la compra y otra al enviar. Explicamos cada etapa y su importe antes de empezarla." },
+      { q: "Enviáis a todos los países del Golfo?", a: "Enviamos a puertos de Oriente Medio. Mándanos el puerto de destino que quieras y confirmamos la ruta y el coste orientativo." },
+      { q: "Importáis también desde China?", a: "Sí. Cubrimos Corea del Sur y China, y la elección depende del modelo que busques y de tu presupuesto." },
+      { q: "Y los aranceles en mi país?", a: "Los aranceles se pagan en el país de destino y cambian de un país a otro. Preparamos toda la documentación del despacho y dejamos claro qué incluye y qué no incluye nuestro precio." },
+    ],
+  },
+  footer: {
+    tagline: "Exportación de coches desde Corea y China a Oriente Medio.",
+    rights: "Korabia. Todos los derechos reservados.",
+    contactHeading: "Contacto",
+    sectionsHeading: "Secciones",
+    languagesHeading: "Idiomas",
+  },
+  notFound: { code: "404", title: "Página no encontrada", body: "Ese enlace no es correcto o la página se ha movido.", home: "Volver al inicio" },
+  errorPage: { title: "Esta página no ha cargado", body: "Ha fallado algo por nuestra parte. Prueba a recargar.", retry: "Reintentar", home: "Inicio" },
+};
