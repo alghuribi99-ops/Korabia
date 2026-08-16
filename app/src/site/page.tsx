@@ -8,6 +8,7 @@ import { SiteNav } from "../components/site/nav";
 import { Process } from "../components/site/process";
 import { RequestForm } from "../components/site/request-form";
 import { Services } from "../components/site/services";
+import { ViewPing } from "../components/site/view-ping";
 import { Vehicles } from "../components/site/vehicles";
 import { Why } from "../components/site/why";
 import { getDict } from "./content";
@@ -92,6 +93,7 @@ export function SitePage({ lang }: { lang: Lang }) {
       <SiteFooter lang={lang} />
       <MobileActionBar lang={lang} />
       <LangSuggest lang={lang} />
+      <ViewPing lang={lang} />
       <div aria-hidden="true" className="h-14 lg:hidden" />
     </div>
   );

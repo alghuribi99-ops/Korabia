@@ -23,6 +23,7 @@ type AppEnv = {
   // .fetch(). See skills/containers.md.
   CONTAINER?: DurableObjectNamespace;
   HF_ENV?: string;
+  ADMIN_PASSWORD?: string;
   APP_SLUG?: string;
 };
 
