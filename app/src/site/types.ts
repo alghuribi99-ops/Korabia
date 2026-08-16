@@ -43,7 +43,7 @@ export const LEGAL = {
   regNumber: "576-60-00821",
   tradeName: "코라비아 (korabia)",
   representative: "ALGHURIBI MOHAMMED MAHDI AHMED",
-  addressKo: "인천광역시 미추홀구 문학길109번길 17-7, 향기주택 B02호 (문학동)",
+  addressKo: "인천광역시 미추홀구 매소홀로 262, 1206호",
   since: "2024-05-20",
 } as const;
 

@@ -137,7 +137,7 @@ export const en: Dict = {
       since: "Registered since",
       authority: "Registering authority",
     },
-    address: "17-7 Munhak-gil 109beon-gil, Michuhol-gu, Incheon, South Korea, unit B02",
+    address: "262 Maesohol-ro, Michuhol-gu, Incheon, South Korea, unit 1206",
     scope: "Wholesale and retail trade: used car export and auto parts export",
     authority: "Incheon Tax Office, South Korea",
   },

@@ -41,7 +41,7 @@ function jsonLd(lang: Lang) {
         areaServed: ["SA", "AE", "KW", "QA", "BH", "OM", "JO", "IQ", "RU", "KZ", "ES", "KR"],
         address: {
           "@type": "PostalAddress",
-          streetAddress: "17-7 Munhak-gil 109beon-gil, Michuhol-gu",
+          streetAddress: "262 Maesohol-ro, Michuhol-gu",
           addressLocality: "Incheon",
           addressRegion: "Incheon",
           addressCountry: "KR",

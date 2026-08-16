@@ -137,7 +137,7 @@ export const es: Dict = {
       since: "Fecha de alta",
       authority: "Organismo de registro",
     },
-    address: "17-7 Munhak-gil 109beon-gil, Michuhol-gu, Incheon, Corea del Sur, unidad B02",
+    address: "262 Maesohol-ro, Michuhol-gu, Incheon, Corea del Sur, unidad 1206",
     scope: "Comercio mayorista y minorista: exportación de coches usados y recambios",
     authority: "Oficina Tributaria de Incheon, Corea del Sur",
   },
