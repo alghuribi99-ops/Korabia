@@ -18,9 +18,11 @@ export type Lead = {
 
 export type Bucket = { key: string; n: number };
 
+export type Range = 7 | 30 | 90;
+
 export type AdminData = {
   ok: true;
-  range: number;
+  range: Range;
   kpi: {
     leadsTotal: number;
     leadsRange: number;
