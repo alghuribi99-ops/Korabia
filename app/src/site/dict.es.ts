@@ -124,6 +124,23 @@ export const es: Dict = {
     sectionsHeading: "Secciones",
     languagesHeading: "Idiomas",
   },
+  legal: {
+    heading: "Datos oficiales de la empresa",
+    note: "Korabia es una empresa registrada en la Agencia Tributaria de Corea. Su actividad registrada es la exportación de coches usados y de recambios.",
+    badge: "Empresa registrada en Corea del Sur",
+    labels: {
+      regNumber: "Número de registro mercantil",
+      tradeName: "Nombre registrado",
+      representative: "Representante",
+      address: "Domicilio registrado",
+      scope: "Actividad registrada",
+      since: "Fecha de alta",
+      authority: "Organismo de registro",
+    },
+    address: "17-7 Munhak-gil 109beon-gil, Michuhol-gu, Incheon, Corea del Sur, unidad B02",
+    scope: "Comercio mayorista y minorista: exportación de coches usados y recambios",
+    authority: "Oficina Tributaria de Incheon, Corea del Sur",
+  },
   notFound: { code: "404", title: "Página no encontrada", body: "Ese enlace no es correcto o la página se ha movido.", home: "Volver al inicio" },
   errorPage: { title: "Esta página no ha cargado", body: "Ha fallado algo por nuestra parte. Prueba a recargar.", retry: "Reintentar", home: "Inicio" },
 };

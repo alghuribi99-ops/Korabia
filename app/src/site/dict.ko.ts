@@ -124,6 +124,23 @@ export const ko: Dict = {
     sectionsHeading: "섹션",
     languagesHeading: "언어",
   },
+  legal: {
+    heading: "사업자 정보",
+    note: "코라비아는 국세청에 정식 등록된 사업자이며, 등록 업종은 중고차 수출과 자동차 부품 수출입니다.",
+    badge: "대한민국 정식 등록 사업자",
+    labels: {
+      regNumber: "사업자등록번호",
+      tradeName: "상호",
+      representative: "대표자",
+      address: "사업장 소재지",
+      scope: "업태 및 종목",
+      since: "개업연월일",
+      authority: "등록기관",
+    },
+    address: "인천광역시 미추홀구 문학길109번길 17-7, 향기주택 B02호 (문학동)",
+    scope: "도매 및 소매업: 중고차 수출, 자동차 부품수출",
+    authority: "인천세무서, 대한민국",
+  },
   notFound: { code: "404", title: "페이지를 찾을 수 없습니다", body: "주소가 잘못되었거나 페이지가 이동되었습니다.", home: "홈으로" },
   errorPage: { title: "페이지를 불러오지 못했습니다", body: "저희 쪽에서 문제가 발생했습니다. 새로고침해 주세요.", retry: "다시 시도", home: "홈" },
 };

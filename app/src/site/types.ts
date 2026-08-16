@@ -33,6 +33,20 @@ export function whatsappLink(message: string) {
   return "https://wa.me/" + CONTACT.whatsappDigits + "?text=" + encodeURIComponent(message);
 }
 
+/**
+ * Verbatim facts from the Korean business registration certificate
+ * (사업자등록증). Language independent, so they live outside the dictionaries.
+ * The representative's date of birth appears on the certificate and is
+ * deliberately NOT published here.
+ */
+export const LEGAL = {
+  regNumber: "576-60-00821",
+  tradeName: "코라비아 (korabia)",
+  representative: "ALGHURIBI MOHAMMED MAHDI AHMED",
+  addressKo: "인천광역시 미추홀구 문학길109번길 17-7, 향기주택 B02호 (문학동)",
+  since: "2024-05-20",
+} as const;
+
 /** Media is language independent; dictionaries stay pure text. */
 export const SERVICE_IMAGES = [
   "/assets/service-auction.webp",
@@ -102,6 +116,18 @@ export type Dict = {
     contactHeading: string;
     sectionsHeading: string;
     languagesHeading: string;
+  };
+  legal: {
+    heading: string;
+    note: string;
+    badge: string;
+    labels: Record<
+      "regNumber" | "tradeName" | "representative" | "address" | "scope" | "since" | "authority",
+      string
+    >;
+    address: string;
+    scope: string;
+    authority: string;
   };
   notFound: { code: string; title: string; body: string; home: string };
   errorPage: { title: string; body: string; retry: string; home: string };

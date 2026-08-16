@@ -124,6 +124,23 @@ export const en: Dict = {
     sectionsHeading: "Sections",
     languagesHeading: "Languages",
   },
+  legal: {
+    heading: "Official company details",
+    note: "Korabia is a business registered with the Korean National Tax Service. Its registered activity is used car export and auto parts export.",
+    badge: "Registered business in South Korea",
+    labels: {
+      regNumber: "Business registration number",
+      tradeName: "Registered name",
+      representative: "Representative",
+      address: "Registered address",
+      scope: "Registered activity",
+      since: "Registered since",
+      authority: "Registering authority",
+    },
+    address: "17-7 Munhak-gil 109beon-gil, Michuhol-gu, Incheon, South Korea, unit B02",
+    scope: "Wholesale and retail trade: used car export and auto parts export",
+    authority: "Incheon Tax Office, South Korea",
+  },
   notFound: { code: "404", title: "Page not found", body: "That link is wrong or the page has moved.", home: "Back to home" },
   errorPage: { title: "This page did not load", body: "Something went wrong on our side. Try refreshing.", retry: "Try again", home: "Home" },
 };
