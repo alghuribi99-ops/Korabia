@@ -231,7 +231,7 @@ function Admin() {
           <DayColumns data={data.viewsByDay} label="الزيارات يومياً" />
         </section>
 
-        <section className="mt-6 grid grid-cols-1 gap-px border border-[#DCDCD6] bg-[#DCDCD6] md:grid-cols-2 xl:grid-cols-4">
+        <section className="mt-6 grid grid-cols-1 gap-px border border-[#DCDCD6] bg-[#DCDCD6] md:grid-cols-2 xl:grid-cols-3">
           <div className="bg-white p-6">
             <BarList
               title="الزيارات حسب اللغة"
@@ -242,6 +242,9 @@ function Admin() {
           </div>
           <div className="bg-white p-6">
             <BarList title="الزيارات حسب الدولة" rows={data.byCountry} renderKey={countryLabel} empty="لا توجد زيارات بعد." />
+          </div>
+          <div className="bg-white p-6">
+            <BarList title="الزيارات حسب المدينة" rows={data.byCity} empty="ما توفرت بيانات المدينة بعد." />
           </div>
           <div className="bg-white p-6">
             <BarList

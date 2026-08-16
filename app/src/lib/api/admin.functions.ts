@@ -33,6 +33,7 @@ export type AdminData = {
   viewsByDay: { day: string; n: number }[];
   byLang: Bucket[];
   byCountry: Bucket[];
+  byCity: Bucket[];
   byDevice: Bucket[];
   byReferrer: Bucket[];
   leads: Lead[];
@@ -56,7 +57,7 @@ const MAX_FAILURES = 8;
 const WINDOW = "-10 minutes";
 
 const ENSURE_VIEWS =
-  "CREATE TABLE IF NOT EXISTS page_views (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, lang TEXT, country TEXT, referrer TEXT, device TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))";
+  "CREATE TABLE IF NOT EXISTS page_views (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, lang TEXT, country TEXT, city TEXT, region TEXT, referrer TEXT, device TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))";
 
 export const loadAdminData = createServerFn({ method: "POST" })
   .inputValidator(
@@ -96,6 +97,13 @@ export const loadAdminData = createServerFn({ method: "POST" })
     await DB.prepare("DELETE FROM admin_attempts").run();
 
     await DB.prepare(ENSURE_VIEWS).run();
+    for (const column of ["city", "region"]) {
+      try {
+        await DB.prepare("ALTER TABLE page_views ADD COLUMN " + column + " TEXT").run();
+      } catch {
+        /* already present */
+      }
+    }
 
     const since = `-${data.range} days`;
     const one = async <T>(sql: string, ...binds: unknown[]) =>
@@ -154,6 +162,12 @@ export const loadAdminData = createServerFn({ method: "POST" })
         since,
       ),
     );
+    const byCity = bucket(
+      await many<{ key: string | null; n: number }>(
+        "SELECT (CASE WHEN city IS NULL OR city = '' THEN NULL ELSE city || CASE WHEN country IS NULL THEN '' ELSE ', ' || country END END) AS key, COUNT(*) AS n FROM page_views WHERE created_at >= datetime('now', ?) AND city IS NOT NULL AND city != '' GROUP BY key ORDER BY n DESC LIMIT 12",
+        since,
+      ),
+    );
     const byDevice = bucket(
       await many<{ key: string | null; n: number }>(
         "SELECT device AS key, COUNT(*) AS n FROM page_views WHERE created_at >= datetime('now', ?) GROUP BY device ORDER BY n DESC",
@@ -184,6 +198,7 @@ export const loadAdminData = createServerFn({ method: "POST" })
       viewsByDay,
       byLang,
       byCountry,
+      byCity,
       byDevice,
       byReferrer,
       leads,
