@@ -54,7 +54,7 @@ export function DayColumns({ data, label }: { data: { day: string; n: number }[]
           </div>
         ))}
 
-        <div className="absolute inset-y-0 end-0 flex items-end gap-[2px] ps-12">
+        <div className="absolute inset-0 flex items-end gap-[2px] ps-12">
           {data.map((d) => (
             <div key={d.day} className="group relative flex h-full flex-1 items-end justify-center">
               <div
@@ -141,12 +141,8 @@ export function BarList({
               </div>
               <div className="mt-1.5 h-[10px] w-full" style={{ background: TRACK }}>
                 <div
-                  className="h-full transition-opacity group-hover:opacity-80"
-                  style={{
-                    width: Math.max(3, (r.n / peak) * 100) + "%",
-                    background: ACCENT,
-                    borderRadius: "0 4px 4px 0",
-                  }}
+                  className="k-bar h-full transition-opacity group-hover:opacity-80"
+                  style={{ width: Math.max(3, (r.n / peak) * 100) + "%", background: ACCENT }}
                   title={String(r.n)}
                 />
               </div>

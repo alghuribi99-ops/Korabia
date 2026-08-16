@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as RuRouteImport } from './routes/ru'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as ApiHitRouteImport } from './routes/api.hit'
 import { Route as KoRouteImport } from './routes/ko'
 import { Route as EsRouteImport } from './routes/es'
 import { Route as EnRouteImport } from './routes/en'
@@ -25,6 +27,16 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHitRoute = ApiHitRouteImport.update({
+  id: '/api/hit',
+  path: '/api/hit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RuRoute = RuRouteImport.update({
@@ -55,6 +67,8 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/api/hit': typeof ApiHitRoute
   '/en': typeof EnRoute
   '/es': typeof EsRoute
   '/ko': typeof KoRoute
@@ -64,6 +78,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/api/hit': typeof ApiHitRoute
   '/en': typeof EnRoute
   '/es': typeof EsRoute
   '/ko': typeof KoRoute
@@ -74,6 +90,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/api/hit': typeof ApiHitRoute
   '/en': typeof EnRoute
   '/es': typeof EsRoute
   '/ko': typeof KoRoute
@@ -83,12 +101,14 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
+  fullPaths: '/' | '/admin' | '/api/hit' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
+  to: '/' | '/admin' | '/api/hit' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
   id:
     | '__root__'
     | '/'
+    | '/admin'
+    | '/api/hit'
     | '/en'
     | '/es'
     | '/ko'
@@ -99,6 +119,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  ApiHitRoute: typeof ApiHitRoute
   EnRoute: typeof EnRoute
   EsRoute: typeof EsRoute
   KoRoute: typeof KoRoute
@@ -121,6 +143,20 @@ declare module '@tanstack/react-router' {
       path: '/robots.txt'
       fullPath: '/robots.txt'
       preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/hit': {
+      id: '/api/hit'
+      path: '/api/hit'
+      fullPath: '/api/hit'
+      preLoaderRoute: typeof ApiHitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ru': {
@@ -163,6 +199,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  ApiHitRoute: ApiHitRoute,
   EnRoute: EnRoute,
   EsRoute: EsRoute,
   KoRoute: KoRoute,

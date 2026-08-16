@@ -77,6 +77,7 @@ details[open] .k-sign { color: var(--k-accent); }
 .k-field:focus { border-bottom-color: #7d95e8; }
 .k-field option { color: #111619; }
 .k-lang-current { color: var(--k-accent); }
+.k-bar { border-start-end-radius: 4px; border-end-end-radius: 4px; }
 @media (prefers-reduced-motion: reduce) {
   html[data-korabia] { scroll-behavior: auto; }
   .k-rise, .k-grow { animation: none !important; transform: none !important; }
