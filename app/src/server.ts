@@ -5,23 +5,55 @@ import { renderErrorPage } from "./lib/error-page";
 
 const CANONICAL_ORIGIN = "https://korabia.co";
 
-// The site lives on korabia.co. Two hosts are permanently sent there:
-// the retired Higgsfield host, and the www subdomain (one canonical URL for
-// search engines). Preview/workers.dev hosts are left alone so a preview
-// deployment can still be opened as itself.
-function canonicalRedirect(request: Request): Response | null {
-  const url = new URL(request.url);
-  const host = url.hostname;
-  const retired = host.endsWith(".higgsfield.app");
-  const www = host === "www.korabia.co";
-  if (!retired && !www) return null;
+function permanentRedirect(location: string): Response {
   return new Response(null, {
     status: 301,
-    headers: {
-      location: CANONICAL_ORIGIN + url.pathname + url.search,
-      "cache-control": "public, max-age=3600",
-    },
+    headers: { location, "cache-control": "public, max-age=3600" },
   });
+}
+
+// The site lives on korabia.co. Two hosts are permanently sent there: the
+// retired Higgsfield host, and the www subdomain (so search engines see one
+// canonical URL). Preview hosts are left alone so a preview deployment can
+// still be opened as itself.
+function canonicalRedirect(url: URL): Response | null {
+  const host = url.hostname;
+  if (!host.endsWith(".higgsfield.app") && host !== "www.korabia.co") return null;
+  return permanentRedirect(CANONICAL_ORIGIN + url.pathname + url.search);
+}
+
+// Pages of the previous site are still in Google's index under their old
+// Arabic slugs. A visitor who clicks one should land on the closest part of
+// the current site rather than on a dead end, so an unknown page is redirected
+// permanently instead of returning 404. Everything that is not a page — assets,
+// images, API calls — keeps its real 404.
+const LEGACY_SECTIONS: Array<[RegExp, string]> = [
+  [/(مزاد|سيار|مركب|car|auction|vehicle|auto)/i, "/#services"],
+  [/(تواصل|اتصل|طلب|contact|order|quote|inquir)/i, "/#request"],
+];
+
+function legacyTarget(pathname: string): string {
+  let decoded = pathname;
+  try {
+    decoded = decodeURIComponent(pathname);
+  } catch {
+    // A malformed escape sequence is not worth failing the redirect over.
+  }
+  for (const [pattern, target] of LEGACY_SECTIONS) {
+    if (pattern.test(decoded)) return target;
+  }
+  return "/";
+}
+
+/** A request for a page, as opposed to an asset, an image or an API call. */
+function isPageRequest(request: Request, url: URL): boolean {
+  if (request.method !== "GET" && request.method !== "HEAD") return false;
+  if (!(request.headers.get("accept") ?? "").includes("text/html")) return false;
+  const path = url.pathname;
+  if (path.startsWith("/api/") || path.startsWith("/img") || path.startsWith("/assets/")) {
+    return false;
+  }
+  return !/\.[a-z0-9]{2,5}$/i.test(path);
 }
 
 type ServerEntry = {
@@ -61,10 +93,17 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
-      const redirect = canonicalRedirect(request);
-      if (redirect) return redirect;
+      const url = new URL(request.url);
+      const canonical = canonicalRedirect(url);
+      if (canonical) return canonical;
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
+
+      if (response.status === 404 && isPageRequest(request, url)) {
+        return permanentRedirect(CANONICAL_ORIGIN + legacyTarget(url.pathname));
+      }
+
       return await normalizeCatastrophicSsrResponse(response);
     } catch (error) {
       console.error(error);
