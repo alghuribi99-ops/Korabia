@@ -59,8 +59,11 @@ note: one short Arabic line, at most 120 characters, listing only extras the tex
 
 Never guess and never fill a field from general knowledge. If the text does not state something, return "" for it.`;
 
+// Tried in order. A model that is retired, busy, or gated behind a paid plan
+// simply hands the read to the next one, and the rule reader backs them all.
 const MODELS = [
   "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+  "@cf/google/gemma-4-26b-a4b-it",
   "@cf/meta/llama-3.1-8b-instruct-fast",
 ];
 
