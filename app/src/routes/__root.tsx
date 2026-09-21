@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import brandCss from "../site/brand.css?url";
 import { reportHiggsfieldError } from "../lib/higgsfield-error-reporting";
+import { armInstallCapture } from "../lib/install-bridge";
 import { getDict } from "../site/content";
 import { LANGS, LANG_META, type Lang } from "../site/types";
 
@@ -129,6 +130,12 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const lang = useLang();
+
+  // Armed at app start, well before the panel's banner mounts.
+  useEffect(() => {
+    if (window.location.pathname.startsWith("/admin")) armInstallCapture();
+  }, [lang]);
 
   useEffect(() => {
     if (!__HF_DESIGN_INSPECTOR__) {
