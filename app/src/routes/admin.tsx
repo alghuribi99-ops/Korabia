@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 
 import { BarList, DayColumns, StatTile } from "../components/admin/charts";
+import { InstallApp } from "../components/admin/install-app";
 import { OffersPanel } from "../components/admin/offers-panel";
 import { loadAdminData, type AdminData } from "../lib/api/admin.functions";
 import { LANG_META, type Lang } from "../site/types";
@@ -11,6 +12,15 @@ export const Route = createFileRoute("/admin")({
     meta: [
       { title: "لوحة تحكم كورابيا" },
       { name: "robots", content: "noindex, nofollow" },
+      { name: "theme-color", content: "#111619" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "كورابيا" },
+    ],
+    links: [
+      { rel: "manifest", href: "/admin.webmanifest" },
+      { rel: "apple-touch-icon", href: "/assets/admin-192.png" },
     ],
   }),
   component: Admin,
@@ -73,7 +83,7 @@ function Admin() {
         setData(res);
         setStatus("idle");
         try {
-          window.sessionStorage.setItem(KEY, secret);
+          window.localStorage.setItem(KEY, secret);
         } catch {
           /* storage blocked */
         }
@@ -89,7 +99,7 @@ function Admin() {
   useEffect(() => {
     let saved = "";
     try {
-      saved = window.sessionStorage.getItem(KEY) ?? "";
+      saved = window.localStorage.getItem(KEY) ?? "";
     } catch {
       /* storage blocked */
     }
@@ -169,6 +179,8 @@ function Admin() {
 
   return (
     <div data-lang="ar" dir="rtl" className="min-h-dvh pb-20">
+      <InstallApp />
+
       <header className="border-b border-[#DCDCD6] bg-white">
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-5 py-5 md:px-8">
           <h1 className="k-display text-xl">لوحة تحكم كورابيا</h1>
@@ -226,7 +238,7 @@ function Admin() {
               type="button"
               onClick={() => {
                 try {
-                  window.sessionStorage.removeItem(KEY);
+                  window.localStorage.removeItem(KEY);
                 } catch {
                   /* storage blocked */
                 }

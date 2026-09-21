@@ -6,6 +6,7 @@ import {
   offerAction,
   type Offer,
 } from "../../lib/api/offers.functions";
+import { parseListing } from "../../lib/parse-listing";
 import { COLORS, FUELS, OFFER_TEXT, TRANSMISSIONS } from "../../site/offer-labels";
 
 const AR = OFFER_TEXT.ar;
@@ -59,6 +60,8 @@ export function OffersPanel({ password }: { password: string }) {
   const [values, setValues] = useState(EMPTY);
   const [photos, setPhotos] = useState<string[]>([]);
   const [busy, setBusy] = useState<"idle" | "loading" | "saving" | "uploading">("idle");
+  const [paste, setPaste] = useState("");
+  const [pasteNote, setPasteNote] = useState("");
   const [error, setError] = useState("");
 
   const refresh = useCallback(async () => {
@@ -133,6 +136,27 @@ export function OffersPanel({ password }: { password: string }) {
     await refresh();
   }
 
+  function applyPaste() {
+    const found = parseListing(paste);
+    const filled = Object.keys(found).length;
+    if (filled === 0) {
+      setPasteNote("ما قدرت أقرأ بيانات من النص. عبّي الحقول يدوياً.");
+      return;
+    }
+    setValues((prev) => ({
+      ...prev,
+      make: found.make ?? prev.make,
+      model: found.model ?? prev.model,
+      year: found.year ?? prev.year,
+      mileage: found.mileage ?? prev.mileage,
+      price: found.price ?? prev.price,
+      transmission: found.transmission ?? prev.transmission,
+      fuel: found.fuel ?? prev.fuel,
+      color: found.color ?? prev.color,
+    }));
+    setPasteNote("عبّيت " + filled + " حقول. راجعها قبل النشر.");
+  }
+
   const set = (k: keyof typeof EMPTY) => (e: { target: { value: string } }) =>
     setValues((prev) => ({ ...prev, [k]: e.target.value }));
 
@@ -144,30 +168,66 @@ export function OffersPanel({ password }: { password: string }) {
           العرض ينشر فوراً ويختفي تلقائياً بعد ٤٨ ساعة.
         </p>
 
-        <form onSubmit={onSubmit} className="mt-7 grid grid-cols-2 gap-x-5 gap-y-5">
-          <label className="col-span-1">
+        <div className="mt-6 border border-[#DCDCD6] bg-[#F2F2EF] p-4">
+          <label className="block">
+            <span className="text-[13px] text-[#6E767C]">الصق رسالة الواتساب هنا</span>
+            <textarea
+              rows={3}
+              value={paste}
+              onChange={(e) => setPaste(e.target.value)}
+              placeholder="هيونداي سوناتا 2021 ممشى 38000 كم اوتوماتيك بنزين ابيض السعر 14500$"
+              className="mt-2 w-full resize-none border border-[#DCDCD6] bg-white p-3 text-[14px] outline-none focus:border-[#1F3FB8]"
+            />
+          </label>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={applyPaste}
+              disabled={!paste.trim()}
+              className="bg-[#111619] px-4 py-2 text-[13px] font-medium text-[#F2F2EF] transition-colors hover:bg-[#1F3FB8] disabled:opacity-40"
+            >
+              اقرأ وعبّي الحقول
+            </button>
+            {paste ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setPaste("");
+                  setPasteNote("");
+                }}
+                className="text-[13px] text-[#6E767C] underline"
+              >
+                امسح
+              </button>
+            ) : null}
+            {pasteNote ? <span className="text-[12px] text-[#6E767C]">{pasteNote}</span> : null}
+          </div>
+        </div>
+
+        <form onSubmit={onSubmit} className="mt-6 grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
+          <label className="sm:col-span-1">
             <span className="text-[13px] text-[#6E767C]">الماركة</span>
             <input required className={field} value={values.make} onChange={set("make")} placeholder="Hyundai" />
           </label>
-          <label className="col-span-1">
+          <label className="sm:col-span-1">
             <span className="text-[13px] text-[#6E767C]">الموديل</span>
             <input required className={field} value={values.model} onChange={set("model")} placeholder="Sonata" />
           </label>
-          <label className="col-span-1">
+          <label className="sm:col-span-1">
             <span className="text-[13px] text-[#6E767C]">سنة الصنع</span>
             <input inputMode="numeric" dir="ltr" className={field} value={values.year} onChange={set("year")} placeholder="2021" />
           </label>
-          <label className="col-span-1">
+          <label className="sm:col-span-1">
             <span className="text-[13px] text-[#6E767C]">الممشى بالكيلو</span>
             <input inputMode="numeric" dir="ltr" className={field} value={values.mileage} onChange={set("mileage")} placeholder="45000" />
           </label>
-          <label className="col-span-2">
+          <label className="sm:col-span-2">
             <span className="text-[13px] text-[#6E767C]">
               السعر <span className="text-[#6E767C]/70">(اتركه فاضي ليظهر «تواصل للسعر»)</span>
             </span>
             <input className={field} value={values.price} onChange={set("price")} placeholder="12,500 USD" />
           </label>
-          <label className="col-span-1">
+          <label className="sm:col-span-1">
             <span className="text-[13px] text-[#6E767C]">ناقل الحركة</span>
             <select className={field} value={values.transmission} onChange={set("transmission")}>
               {TRANSMISSIONS.map((k) => (
@@ -175,7 +235,7 @@ export function OffersPanel({ password }: { password: string }) {
               ))}
             </select>
           </label>
-          <label className="col-span-1">
+          <label className="sm:col-span-1">
             <span className="text-[13px] text-[#6E767C]">الوقود</span>
             <select className={field} value={values.fuel} onChange={set("fuel")}>
               {FUELS.map((k) => (
@@ -183,7 +243,7 @@ export function OffersPanel({ password }: { password: string }) {
               ))}
             </select>
           </label>
-          <label className="col-span-2">
+          <label className="sm:col-span-2">
             <span className="text-[13px] text-[#6E767C]">اللون</span>
             <select className={field} value={values.color} onChange={set("color")}>
               {COLORS.map((k) => (
@@ -191,17 +251,17 @@ export function OffersPanel({ password }: { password: string }) {
               ))}
             </select>
           </label>
-          <label className="col-span-2">
+          <label className="sm:col-span-2">
             <span className="text-[13px] text-[#6E767C]">ملاحظة قصيرة (اختياري)</span>
             <input className={field} value={values.note} onChange={set("note")} placeholder="فحص كامل، بدون حوادث" />
           </label>
 
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <span className="text-[13px] text-[#6E767C]">الصور (حتى ٦)</span>
             <div className="mt-3 flex flex-wrap gap-2">
               {photos.map((key) => (
                 <div key={key} className="relative">
-                  <img src={"/img?k=" + encodeURIComponent(key)} alt="" className="h-20 w-20 object-cover" />
+                  <img src={"/img?k=" + encodeURIComponent(key)} alt="" className="h-24 w-24 object-cover" />
                   <button
                     type="button"
                     onClick={() => setPhotos((p) => p.filter((x) => x !== key))}
@@ -213,7 +273,7 @@ export function OffersPanel({ password }: { password: string }) {
                 </div>
               ))}
               {photos.length < MAX_PHOTOS ? (
-                <label className="flex h-20 w-20 cursor-pointer items-center justify-center border border-dashed border-[#DCDCD6] text-[24px] text-[#6E767C]">
+                <label className="flex h-24 w-24 cursor-pointer items-center justify-center border border-dashed border-[#DCDCD6] text-[28px] text-[#6E767C]">
                   +
                   <input type="file" accept="image/*" multiple className="hidden" onChange={onPick} />
                 </label>
@@ -221,12 +281,12 @@ export function OffersPanel({ password }: { password: string }) {
             </div>
           </div>
 
-          {error ? <p className="col-span-2 text-[13px] text-[#B3261E]">{error}</p> : null}
+          {error ? <p className="text-[13px] text-[#B3261E] sm:col-span-2">{error}</p> : null}
 
           <button
             type="submit"
             disabled={busy === "saving" || busy === "uploading"}
-            className="col-span-2 mt-2 bg-[#1F3FB8] py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-[#16309A] disabled:opacity-60"
+            className="mt-2 bg-[#1F3FB8] py-4 sm:col-span-2 text-[15px] font-medium text-white transition-colors hover:bg-[#16309A] disabled:opacity-60"
           >
             {busy === "uploading" ? "جاري رفع الصور" : busy === "saving" ? "جاري النشر" : "انشر العرض الآن"}
           </button>

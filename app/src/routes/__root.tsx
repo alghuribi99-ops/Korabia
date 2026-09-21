@@ -29,7 +29,6 @@ function buildHead() {
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#f2f2ef" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -41,8 +40,6 @@ function buildHead() {
         href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap",
       },
       { rel: "icon", href: "/assets/favicon.png" },
-      { rel: "apple-touch-icon", href: "/assets/apple-touch-icon.png" },
-      { rel: "manifest", href: "/site.webmanifest" },
     ],
   };
 }

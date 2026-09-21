@@ -26,9 +26,12 @@ export function localeHead(lang: Lang) {
       { name: "twitter:title", content: t.meta.title },
       { name: "twitter:description", content: t.meta.description },
       { name: "twitter:image", content: OG_IMAGE },
+      { name: "theme-color", content: "#f2f2ef" },
     ],
     links: [
       { rel: "canonical", href: url },
+      { rel: "manifest", href: "/site.webmanifest" },
+      { rel: "apple-touch-icon", href: "/assets/apple-touch-icon.png" },
       ...LANGS.map((code) => ({
         rel: "alternate",
         hrefLang: LANG_META[code].htmlLang,
