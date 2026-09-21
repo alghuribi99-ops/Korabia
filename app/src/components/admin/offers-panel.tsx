@@ -6,7 +6,7 @@ import {
   offerAction,
   type Offer,
 } from "../../lib/api/offers.functions";
-import { parseListing } from "../../lib/parse-listing";
+import { readListing } from "../../lib/api/read-listing.functions";
 import { COLORS, FUELS, OFFER_TEXT, TRANSMISSIONS } from "../../site/offer-labels";
 
 const AR = OFFER_TEXT.ar;
@@ -63,6 +63,7 @@ export function OffersPanel({ password }: { password: string }) {
   const [loaded, setLoaded] = useState(false);
   const [paste, setPaste] = useState("");
   const [pasteNote, setPasteNote] = useState("");
+  const [reading, setReading] = useState(false);
   const [error, setError] = useState("");
 
   const refresh = useCallback(async () => {
@@ -144,25 +145,43 @@ export function OffersPanel({ password }: { password: string }) {
     await refresh();
   }
 
-  function applyPaste() {
-    const found = parseListing(paste);
-    const filled = Object.keys(found).length;
-    if (filled === 0) {
-      setPasteNote("ما قدرت أقرأ بيانات من النص. عبّي الحقول يدوياً.");
-      return;
+  async function applyPaste() {
+    setReading(true);
+    setPasteNote("جاري قراءة الرسالة…");
+    try {
+      const res = await readListing({ data: { password, text: paste } });
+      if (!res.ok) {
+        setPasteNote("انتهت الجلسة. اخرج وسجّل الدخول من جديد.");
+        return;
+      }
+      if (res.filled === 0) {
+        setPasteNote("ما لقيت بيانات سيارة في النص. عبّي الحقول يدوياً.");
+        return;
+      }
+      const f = res.fields;
+      setValues((prev) => ({
+        ...prev,
+        make: f.make || prev.make,
+        model: f.model || prev.model,
+        year: f.year || prev.year,
+        mileage: f.mileage || prev.mileage,
+        price: f.price || prev.price,
+        transmission: f.transmission || prev.transmission,
+        fuel: f.fuel || prev.fuel,
+        color: f.color || prev.color,
+        note: f.note || prev.note,
+      }));
+      setPasteNote(
+        "عبّيت " +
+          res.filled +
+          " حقول. راجعها قبل النشر." +
+          (res.source === "rules" ? " (القراءة الذكية ما ردت، استخدمت القراءة العادية)" : ""),
+      );
+    } catch {
+      setPasteNote("تعذّرت القراءة. جرّب مرة ثانية أو عبّي الحقول يدوياً.");
+    } finally {
+      setReading(false);
     }
-    setValues((prev) => ({
-      ...prev,
-      make: found.make ?? prev.make,
-      model: found.model ?? prev.model,
-      year: found.year ?? prev.year,
-      mileage: found.mileage ?? prev.mileage,
-      price: found.price ?? prev.price,
-      transmission: found.transmission ?? prev.transmission,
-      fuel: found.fuel ?? prev.fuel,
-      color: found.color ?? prev.color,
-    }));
-    setPasteNote("عبّيت " + filled + " حقول. راجعها قبل النشر.");
   }
 
   const set = (k: keyof typeof EMPTY) => (e: { target: { value: string } }) =>
@@ -183,7 +202,7 @@ export function OffersPanel({ password }: { password: string }) {
               rows={3}
               value={paste}
               onChange={(e) => setPaste(e.target.value)}
-              placeholder="هيونداي سوناتا 2021 ممشى 38000 كم اوتوماتيك بنزين ابيض السعر 14500$"
+              placeholder="الصق الرسالة كما وصلتك — عربي، كوري، إنجليزي أو مخلوطة"
               className="mt-2 w-full resize-none border border-[#DCDCD6] bg-white p-3 text-[14px] outline-none focus:border-[#1F3FB8]"
             />
           </label>
@@ -191,10 +210,10 @@ export function OffersPanel({ password }: { password: string }) {
             <button
               type="button"
               onClick={applyPaste}
-              disabled={!paste.trim()}
+              disabled={!paste.trim() || reading}
               className="bg-[#111619] px-4 py-2 text-[13px] font-medium text-[#F2F2EF] transition-colors hover:bg-[#1F3FB8] disabled:opacity-40"
             >
-              اقرأ وعبّي الحقول
+              {reading ? "جاري القراءة…" : "اقرأ وعبّي الحقول"}
             </button>
             {paste ? (
               <button

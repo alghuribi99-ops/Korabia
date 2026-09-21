@@ -14,7 +14,13 @@ import type {
   R2Bucket,
 } from "@cloudflare/workers-types";
 
+/** The Workers AI binding, kept to the one call this app makes of it. */
+type WorkersAi = {
+  run: (model: string, input: Record<string, unknown>) => Promise<unknown>;
+};
+
 type AppEnv = {
+  AI?: WorkersAi;
   DB?: D1Database;
   STORAGE?: R2Bucket;
   KV?: KVNamespace;
