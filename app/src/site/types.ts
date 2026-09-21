@@ -92,7 +92,7 @@ export const KOREA_ICONS = [
   "/assets/icon-ship.webp",
 ];
 
-export const NAV_HREFS = ["#services", "#process", "#vehicles", "#korea", "#faq"];
+export const NAV_HREFS = ["#offers", "#services", "#process", "#vehicles", "#korea", "#faq"];
 
 export type Pair = { title: string; body: string };
 

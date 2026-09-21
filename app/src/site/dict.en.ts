@@ -10,7 +10,7 @@ export const en: Dict = {
   },
   hours: { kr: "10:00 to 20:00 Korea time", sa: "04:00 to 14:00 Gulf time", city: "Incheon, South Korea" },
   cta: { request: "Request a car", whatsapp: "Message on WhatsApp" },
-  nav: ["Services", "How it works", "Vehicles", "Korea services", "FAQ"],
+  nav: ["Offers", "Services", "How it works", "Vehicles", "Korea services", "FAQ"],
   hero: {
     headline: ["Your car from Korea,", "no middlemen."],
     sub: "We find it, inspect it on the ground, and ship it from Incheon to your port with full tracking until you take delivery.",

@@ -3,6 +3,7 @@ import { Faq } from "../components/site/faq";
 import { MobileActionBar, SiteFooter } from "../components/site/footer";
 import { Hero } from "../components/site/hero";
 import { Korea } from "../components/site/korea";
+import { Offers } from "../components/site/offers";
 import { LangSuggest } from "../components/site/lang-suggest";
 import { SiteNav } from "../components/site/nav";
 import { Process } from "../components/site/process";
@@ -11,6 +12,7 @@ import { Services } from "../components/site/services";
 import { ViewPing } from "../components/site/view-ping";
 import { Vehicles } from "../components/site/vehicles";
 import { Why } from "../components/site/why";
+import type { OfferFeed } from "../lib/api/offers.functions";
 import { getDict } from "./content";
 import { CONTACT, LANG_META, LEGAL, SITE_ORIGIN, type Lang } from "./types";
 
@@ -73,7 +75,7 @@ function jsonLd(lang: Lang) {
   });
 }
 
-export function SitePage({ lang }: { lang: Lang }) {
+export function SitePage({ lang, offers }: { lang: Lang; offers: OfferFeed }) {
   const meta = LANG_META[lang];
 
   return (
@@ -82,6 +84,7 @@ export function SitePage({ lang }: { lang: Lang }) {
       <SiteNav lang={lang} />
       <main>
         <Hero lang={lang} />
+        <Offers lang={lang} feed={offers} />
         <Services lang={lang} />
         <Process lang={lang} />
         <Vehicles lang={lang} />

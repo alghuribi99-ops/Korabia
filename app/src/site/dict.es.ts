@@ -10,7 +10,7 @@ export const es: Dict = {
   },
   hours: { kr: "10:00 a 20:00 hora de Corea", sa: "04:00 a 14:00 hora del Golfo", city: "Incheon, Corea del Sur" },
   cta: { request: "Solicitar un coche", whatsapp: "Escríbenos por WhatsApp" },
-  nav: ["Servicios", "Cómo trabajamos", "Vehículos", "Servicios en Corea", "Preguntas"],
+  nav: ["Ofertas", "Servicios", "Cómo trabajamos", "Vehículos", "Servicios en Corea", "Preguntas"],
   hero: {
     headline: ["Tu coche desde Corea,", "sin intermediarios."],
     sub: "Lo buscamos, lo inspeccionamos sobre el terreno y lo enviamos desde Incheon a tu puerto con seguimiento completo hasta la entrega.",
