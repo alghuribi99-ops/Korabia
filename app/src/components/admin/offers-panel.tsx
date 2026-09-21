@@ -60,6 +60,7 @@ export function OffersPanel({ password }: { password: string }) {
   const [values, setValues] = useState(EMPTY);
   const [photos, setPhotos] = useState<string[]>([]);
   const [busy, setBusy] = useState<"idle" | "loading" | "saving" | "uploading">("idle");
+  const [loaded, setLoaded] = useState(false);
   const [paste, setPaste] = useState("");
   const [pasteNote, setPasteNote] = useState("");
   const [error, setError] = useState("");
@@ -67,7 +68,14 @@ export function OffersPanel({ password }: { password: string }) {
   const refresh = useCallback(async () => {
     setBusy("loading");
     const res = await adminListOffers({ data: { password } });
-    setOffers(res.offers);
+    if (res.ok) {
+      setOffers(res.offers);
+      setLoaded(true);
+      setError("");
+    } else {
+      // An empty list and a refused list look identical, so say which it is.
+      setError("انتهت الجلسة. اخرج وسجّل الدخول من جديد.");
+    }
     setBusy("idle");
   }, [password]);
 
@@ -296,10 +304,12 @@ export function OffersPanel({ password }: { password: string }) {
       <section className="border border-[#DCDCD6] bg-white">
         <div className="flex items-baseline justify-between gap-4 border-b border-[#DCDCD6] px-6 py-5">
           <h2 className="k-display text-lg">العروض</h2>
-          <span className="k-mono text-[13px] text-[#6E767C]">{offers.length}</span>
+          <span className="k-mono text-[13px] text-[#6E767C]">{loaded ? offers.length : ""}</span>
         </div>
 
-        {offers.length === 0 ? (
+        {!loaded ? (
+          <p className="px-6 py-10 text-[14px] text-[#6E767C]">جاري التحميل</p>
+        ) : offers.length === 0 ? (
           <p className="px-6 py-10 text-[14px] text-[#6E767C]">ما فيه عروض بعد.</p>
         ) : (
           <ul>
