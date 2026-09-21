@@ -3,6 +3,23 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 
+// The site now lives on korabia.co (Cloudflare, owned by Korabia).
+// Everything that still hits the old host is permanently redirected so the
+// old URL keeps working and Google consolidates all ranking onto korabia.co.
+const CANONICAL_ORIGIN = "https://korabia.co";
+
+function canonicalRedirect(request: Request): Response | null {
+  const url = new URL(request.url);
+  if (url.origin === CANONICAL_ORIGIN) return null;
+  return new Response(null, {
+    status: 301,
+    headers: {
+      location: CANONICAL_ORIGIN + url.pathname + url.search,
+      "cache-control": "public, max-age=3600",
+    },
+  });
+}
+
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
 };
@@ -40,6 +57,8 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const redirect = canonicalRedirect(request);
+      if (redirect) return redirect;
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
