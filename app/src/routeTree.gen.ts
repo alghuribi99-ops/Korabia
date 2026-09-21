@@ -14,6 +14,8 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as RuRouteImport } from './routes/ru'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ApiHitRouteImport } from './routes/api.hit'
+import { Route as ApiOfferImageRouteImport } from './routes/api.offer-image'
+import { Route as ImgRouteImport } from './routes/img'
 import { Route as KoRouteImport } from './routes/ko'
 import { Route as EsRouteImport } from './routes/es'
 import { Route as EnRouteImport } from './routes/en'
@@ -27,6 +29,16 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImgRoute = ImgRouteImport.update({
+  id: '/img',
+  path: '/img',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiOfferImageRoute = ApiOfferImageRouteImport.update({
+  id: '/api/offer-image',
+  path: '/api/offer-image',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiHitRoute = ApiHitRouteImport.update({
@@ -69,6 +81,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/api/hit': typeof ApiHitRoute
+  '/api/offer-image': typeof ApiOfferImageRoute
+  '/img': typeof ImgRoute
   '/en': typeof EnRoute
   '/es': typeof EsRoute
   '/ko': typeof KoRoute
@@ -80,6 +94,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/api/hit': typeof ApiHitRoute
+  '/api/offer-image': typeof ApiOfferImageRoute
+  '/img': typeof ImgRoute
   '/en': typeof EnRoute
   '/es': typeof EsRoute
   '/ko': typeof KoRoute
@@ -92,6 +108,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/api/hit': typeof ApiHitRoute
+  '/api/offer-image': typeof ApiOfferImageRoute
+  '/img': typeof ImgRoute
   '/en': typeof EnRoute
   '/es': typeof EsRoute
   '/ko': typeof KoRoute
@@ -101,14 +119,16 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/api/hit' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
+  fullPaths: '/' | '/admin' | '/api/hit' | '/api/offer-image' | '/img' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/api/hit' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
+  to: '/' | '/admin' | '/api/hit' | '/api/offer-image' | '/img' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/api/hit'
+    | '/api/offer-image'
+    | '/img'
     | '/en'
     | '/es'
     | '/ko'
@@ -121,6 +141,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   ApiHitRoute: typeof ApiHitRoute
+  ApiOfferImageRoute: typeof ApiOfferImageRoute
+  ImgRoute: typeof ImgRoute
   EnRoute: typeof EnRoute
   EsRoute: typeof EsRoute
   KoRoute: typeof KoRoute
@@ -143,6 +165,20 @@ declare module '@tanstack/react-router' {
       path: '/robots.txt'
       fullPath: '/robots.txt'
       preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/img': {
+      id: '/img'
+      path: '/img'
+      fullPath: '/img'
+      preLoaderRoute: typeof ImgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/offer-image': {
+      id: '/api/offer-image'
+      path: '/api/offer-image'
+      fullPath: '/api/offer-image'
+      preLoaderRoute: typeof ApiOfferImageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/hit': {
@@ -201,6 +237,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   ApiHitRoute: ApiHitRoute,
+  ApiOfferImageRoute: ApiOfferImageRoute,
+  ImgRoute: ImgRoute,
   EnRoute: EnRoute,
   EsRoute: EsRoute,
   KoRoute: KoRoute,

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 
 import { BarList, DayColumns, StatTile } from "../components/admin/charts";
+import { OffersPanel } from "../components/admin/offers-panel";
 import { loadAdminData, type AdminData } from "../lib/api/admin.functions";
 import { LANG_META, type Lang } from "../site/types";
 
@@ -62,6 +63,7 @@ function Admin() {
   const [data, setData] = useState<AdminData | null>(null);
   const [range, setRange] = useState<(typeof RANGES)[number]>(30);
   const [status, setStatus] = useState<"idle" | "loading" | "bad" | "storage" | "locked">("idle");
+  const [tab, setTab] = useState<"offers" | "leads">("offers");
 
   const fetchData = useCallback(async (secret: string, days: (typeof RANGES)[number]) => {
     setStatus("loading");
@@ -172,6 +174,21 @@ function Admin() {
           <h1 className="k-display text-xl">لوحة تحكم كورابيا</h1>
           <div className="flex flex-wrap items-center gap-2">
             <div className="flex border border-[#DCDCD6]">
+              {([["offers", "العروض"], ["leads", "الطلبات والزوار"]] as const).map(([key, label]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setTab(key)}
+                  className={
+                    "px-3.5 py-2 text-[13px] transition-colors " +
+                    (tab === key ? "bg-[#1F3FB8] text-white" : "text-[#6E767C] hover:text-[#111619]")
+                  }
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div className={"flex border border-[#DCDCD6] " + (tab === "leads" ? "" : "hidden")}>
               {RANGES.map((r) => (
                 <button
                   key={r}
@@ -191,6 +208,7 @@ function Admin() {
             </div>
             <button
               type="button"
+              hidden={tab !== "leads"}
               onClick={() => void fetchData(password, data.range)}
               className="border border-[#DCDCD6] px-3.5 py-2 text-[13px] text-[#111619] transition-colors hover:border-[#111619]"
             >
@@ -198,6 +216,7 @@ function Admin() {
             </button>
             <button
               type="button"
+              hidden={tab !== "leads"}
               onClick={exportCsv}
               className="bg-[#1F3FB8] px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-[#16309A]"
             >
@@ -223,6 +242,10 @@ function Admin() {
       </header>
 
       <main className="mx-auto max-w-[1200px] px-5 md:px-8">
+        {tab === "offers" ? (
+          <OffersPanel password={password} />
+        ) : (
+          <>
         <section className="mt-8 grid grid-cols-1 border border-[#DCDCD6] bg-white sm:grid-cols-2 lg:grid-cols-4">
           <StatTile label="طلبات جديدة" value={nf.format(data.kpi.leadsRange)} sub={"خلال " + data.range + " يوم"} />
           <StatTile label="زيارات" value={nf.format(data.kpi.viewsRange)} sub={"خلال " + data.range + " يوم"} />
@@ -329,6 +352,8 @@ function Admin() {
             </div>
           )}
         </section>
+          </>
+        )}
       </main>
     </div>
   );
