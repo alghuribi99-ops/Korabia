@@ -30,7 +30,7 @@ export const SUGGEST: Record<Lang, { text: string; action: string; dismiss: stri
   ko: { text: "이 사이트는 한국어로도 보실 수 있습니다", action: "한국어로 보기", dismiss: "닫기" },
 };
 
-export const SITE_ORIGIN = "https://korabia-motors.higgsfield.app";
+export const SITE_ORIGIN = "https://korabia.co";
 
 export const CONTACT = {
   whatsappDigits: "821066679149",

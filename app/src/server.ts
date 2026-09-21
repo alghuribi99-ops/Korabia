@@ -3,14 +3,18 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 
-// The site now lives on korabia.co (Cloudflare, owned by Korabia).
-// Everything that still hits the old host is permanently redirected so the
-// old URL keeps working and Google consolidates all ranking onto korabia.co.
 const CANONICAL_ORIGIN = "https://korabia.co";
 
+// The site lives on korabia.co. Two hosts are permanently sent there:
+// the retired Higgsfield host, and the www subdomain (one canonical URL for
+// search engines). Preview/workers.dev hosts are left alone so a preview
+// deployment can still be opened as itself.
 function canonicalRedirect(request: Request): Response | null {
   const url = new URL(request.url);
-  if (url.origin === CANONICAL_ORIGIN) return null;
+  const host = url.hostname;
+  const retired = host.endsWith(".higgsfield.app");
+  const www = host === "www.korabia.co";
+  if (!retired && !www) return null;
   return new Response(null, {
     status: 301,
     headers: {
