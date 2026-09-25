@@ -21,6 +21,10 @@ type Bank = {
   archiveTitle: string;
   askPrice: string;
   inquire: string;
+  photos: string;
+  close: string;
+  previous: string;
+  next: string;
   specYear: string;
   specMileage: string;
   specTransmission: string;
@@ -47,6 +51,10 @@ export const OFFER_TEXT: Record<Lang, Bank> = {
     archiveTitle: "عروض سابقة",
     askPrice: "تواصل للسعر",
     inquire: "استفسر عن السيارة",
+    photos: "صور",
+    close: "إغلاق",
+    previous: "السابق",
+    next: "التالي",
     specYear: "الموديل",
     specMileage: "الممشى",
     specTransmission: "ناقل الحركة",
@@ -71,6 +79,10 @@ export const OFFER_TEXT: Record<Lang, Bank> = {
     archiveTitle: "Previous offers",
     askPrice: "Ask for price",
     inquire: "Ask about this car",
+    photos: "photos",
+    close: "Close",
+    previous: "Previous",
+    next: "Next",
     specYear: "Year",
     specMileage: "Mileage",
     specTransmission: "Transmission",
@@ -95,6 +107,10 @@ export const OFFER_TEXT: Record<Lang, Bank> = {
     archiveTitle: "Прошлые предложения",
     askPrice: "Уточнить цену",
     inquire: "Спросить об этом авто",
+    photos: "фото",
+    close: "Закрыть",
+    previous: "Назад",
+    next: "Вперёд",
     specYear: "Год",
     specMileage: "Пробег",
     specTransmission: "Коробка",
@@ -119,6 +135,10 @@ export const OFFER_TEXT: Record<Lang, Bank> = {
     archiveTitle: "Ofertas anteriores",
     askPrice: "Consultar precio",
     inquire: "Preguntar por este coche",
+    photos: "fotos",
+    close: "Cerrar",
+    previous: "Anterior",
+    next: "Siguiente",
     specYear: "Año",
     specMileage: "Kilometraje",
     specTransmission: "Cambio",
@@ -143,6 +163,10 @@ export const OFFER_TEXT: Record<Lang, Bank> = {
     archiveTitle: "지난 매물",
     askPrice: "가격 문의",
     inquire: "이 차량 문의하기",
+    photos: "장",
+    close: "닫기",
+    previous: "이전",
+    next: "다음",
     specYear: "연식",
     specMileage: "주행거리",
     specTransmission: "변속기",

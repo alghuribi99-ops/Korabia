@@ -9,6 +9,7 @@ import {
   type Transmission,
 } from "../../site/offer-labels";
 import { LANG_META, whatsappLink, type Lang } from "../../site/types";
+import { PhotoViewer } from "./photo-viewer";
 
 const WINDOW_MS = 48 * 60 * 60 * 1000;
 
@@ -87,6 +88,7 @@ function Specs({ offer, lang }: { offer: Offer; lang: Lang }) {
 
 function OfferCard({ offer, lang }: { offer: Offer; lang: Lang }) {
   const o = OFFER_TEXT[lang];
+  const [viewing, setViewing] = useState(false);
   const title = offer.make + " " + offer.model;
   const message = [
     o.waIntro,
@@ -96,25 +98,28 @@ function OfferCard({ offer, lang }: { offer: Offer; lang: Lang }) {
 
   return (
     <article className="flex flex-col bg-white">
-      <div className="relative overflow-hidden bg-[#F2F2EF]">
-        {offer.images[0] ? (
+      {offer.images[0] ? (
+        <button
+          type="button"
+          onClick={() => setViewing(true)}
+          aria-label={offer.images.length + " " + o.photos}
+          className="relative block w-full overflow-hidden bg-[#F2F2EF] text-start"
+        >
           <img
             src={"/img?k=" + encodeURIComponent(offer.images[0])}
             alt={title}
             loading="lazy"
             className="aspect-[4/3] w-full object-cover"
           />
-        ) : (
-          <div className="flex aspect-[4/3] w-full items-center justify-center">
-            <span className="k-mono text-[12px] text-[#6E767C]">KORABIA</span>
-          </div>
-        )}
-        {offer.images.length > 1 ? (
-          <span className="k-mono absolute bottom-3 end-3 bg-[#111619]/85 px-2 py-1 text-[11px] text-[#F2F2EF]">
-            {offer.images.length}
+          <span className="k-mono absolute bottom-3 end-3 bg-[#111619]/85 px-2.5 py-1 text-[11px] text-[#F2F2EF]">
+            {offer.images.length} {o.photos}
           </span>
-        ) : null}
-      </div>
+        </button>
+      ) : (
+        <div className="flex aspect-[4/3] w-full items-center justify-center bg-[#F2F2EF]">
+          <span className="k-mono text-[12px] text-[#6E767C]">KORABIA</span>
+        </div>
+      )}
 
       <div className="flex flex-1 flex-col p-6">
         <h3 className="k-display text-xl">{title}</h3>
@@ -140,27 +145,45 @@ function OfferCard({ offer, lang }: { offer: Offer; lang: Lang }) {
           </a>
         </div>
       </div>
+
+      {viewing ? (
+        <PhotoViewer
+          images={offer.images}
+          title={title}
+          lang={lang}
+          start={0}
+          onClose={() => setViewing(false)}
+        />
+      ) : null}
     </article>
   );
 }
 
 function PastCard({ offer, lang }: { offer: Offer; lang: Lang }) {
   const o = OFFER_TEXT[lang];
+  const [viewing, setViewing] = useState(false);
   const title = offer.make + " " + offer.model;
   return (
     <li className="w-[210px] shrink-0 bg-white">
       <div className="relative bg-[#F2F2EF]">
         {offer.images[0] ? (
-          <img
-            src={"/img?k=" + encodeURIComponent(offer.images[0])}
-            alt={title}
-            loading="lazy"
-            className="aspect-[4/3] w-full object-cover grayscale"
-          />
+          <button
+            type="button"
+            onClick={() => setViewing(true)}
+            aria-label={offer.images.length + " " + o.photos}
+            className="block w-full"
+          >
+            <img
+              src={"/img?k=" + encodeURIComponent(offer.images[0])}
+              alt={title}
+              loading="lazy"
+              className="aspect-[4/3] w-full object-cover grayscale"
+            />
+          </button>
         ) : (
           <div className="aspect-[4/3] w-full" />
         )}
-        <span className="absolute inset-x-0 bottom-0 bg-[#111619]/85 py-1.5 text-center text-[11px] text-[#F2F2EF]">
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-[#111619]/85 py-1.5 text-center text-[11px] text-[#F2F2EF]">
           {o.expired}
         </span>
       </div>
@@ -168,6 +191,16 @@ function PastCard({ offer, lang }: { offer: Offer; lang: Lang }) {
         <p className="text-[14px] text-[#111619]">{title}</p>
         {offer.year ? <p className="k-mono mt-1 text-[12px] text-[#6E767C]">{offer.year}</p> : null}
       </div>
+
+      {viewing ? (
+        <PhotoViewer
+          images={offer.images}
+          title={title}
+          lang={lang}
+          start={0}
+          onClose={() => setViewing(false)}
+        />
+      ) : null}
     </li>
   );
 }
