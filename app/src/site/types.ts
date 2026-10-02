@@ -36,8 +36,12 @@ export const CONTACT = {
   whatsappDigits: "821066679149",
   whatsappDisplay: "+82 10 6667 9149",
   email: "info@korabia.co",
+  // Ordered by the size of the audience actually on each one, so the strongest
+  // channel is the first logo a visitor's eye lands on.
   social: [
+    { label: "TikTok", href: "https://www.tiktok.com/@korabia.services" },
     { label: "Instagram", href: "https://instagram.com/korabia.services" },
+    { label: "Snapchat", href: "https://www.snapchat.com/add/korabia.service" },
     { label: "X", href: "https://x.com/korabia_service" },
     { label: "Facebook", href: "https://facebook.com/102333592638814" },
     { label: "YouTube", href: "https://youtube.com/channel/UC6uUVXG_RIwRbUrQLhYqYUg" },
