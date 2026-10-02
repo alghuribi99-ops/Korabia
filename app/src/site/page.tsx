@@ -3,6 +3,7 @@ import { Faq } from "../components/site/faq";
 import { MobileActionBar, SiteFooter } from "../components/site/footer";
 import { Hero } from "../components/site/hero";
 import { Korea } from "../components/site/korea";
+import { MetaPixel } from "../components/site/meta-pixel";
 import { Offers } from "../components/site/offers";
 import { LangSuggest } from "../components/site/lang-suggest";
 import { SiteNav } from "../components/site/nav";
@@ -97,6 +98,7 @@ export function SitePage({ lang, offers }: { lang: Lang; offers: OfferFeed }) {
       <MobileActionBar lang={lang} />
       <LangSuggest lang={lang} />
       <ViewPing lang={lang} />
+      <MetaPixel />
       <div aria-hidden="true" className="h-14 lg:hidden" />
     </div>
   );

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { whatsappLink, type Lang } from "../../site/types";
+import { trackContact } from "./meta-pixel";
 
 export type WaSource = "hero" | "offer" | "form" | "form-done" | "footer" | "bar";
 
@@ -27,6 +28,7 @@ export function WhatsAppLink({
   children: ReactNode;
 }) {
   function report() {
+    trackContact({ content_name: car ?? source, content_category: source });
     try {
       const payload = JSON.stringify({ source, lang, offerId, car });
       const sent =
