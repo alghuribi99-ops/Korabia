@@ -154,6 +154,7 @@ export const ar: Dict = {
     contactHeading: "التواصل",
     sectionsHeading: "الأقسام",
     languagesHeading: "اللغات",
+    followHeading: "تابعنا",
   },
   legal: {
     heading: "بيانات الشركة الرسمية",

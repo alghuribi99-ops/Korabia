@@ -123,6 +123,7 @@ export const ru: Dict = {
     contactHeading: "Контакты",
     sectionsHeading: "Разделы",
     languagesHeading: "Языки",
+    followHeading: "Мы в соцсетях",
   },
   legal: {
     heading: "Официальные данные компании",

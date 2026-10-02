@@ -131,6 +131,7 @@ export type Dict = {
     contactHeading: string;
     sectionsHeading: string;
     languagesHeading: string;
+    followHeading: string;
   };
   legal: {
     heading: string;

@@ -123,6 +123,7 @@ export const es: Dict = {
     contactHeading: "Contacto",
     sectionsHeading: "Secciones",
     languagesHeading: "Idiomas",
+    followHeading: "Síguenos",
   },
   legal: {
     heading: "Datos oficiales de la empresa",

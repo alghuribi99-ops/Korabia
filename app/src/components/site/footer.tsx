@@ -1,5 +1,6 @@
 import { getDict } from "../../site/content";
 import { CONTACT, LANG_META, NAV_HREFS, type Lang } from "../../site/types";
+import { SocialLinks } from "./social-links";
 import { WhatsAppLink } from "./whatsapp-link";
 import { LangSwitch } from "./lang-switch";
 import { Registration } from "./registration";
@@ -60,15 +61,9 @@ export function SiteFooter({ lang }: { lang: Lang }) {
                 </li>
               ))}
             </ul>
-            <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-[#F2F2EF]/55">
-              {CONTACT.social.map((s) => (
-                <li key={s.href}>
-                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="k-underline relative">
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="mt-8">
+              <SocialLinks heading={t.footer.followHeading} />
+            </div>
           </div>
         </div>
 

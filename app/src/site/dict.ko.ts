@@ -123,6 +123,7 @@ export const ko: Dict = {
     contactHeading: "연락처",
     sectionsHeading: "섹션",
     languagesHeading: "언어",
+    followHeading: "팔로우",
   },
   legal: {
     heading: "사업자 정보",
