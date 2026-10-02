@@ -14,6 +14,7 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as RuRouteImport } from './routes/ru'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ApiHitRouteImport } from './routes/api.hit'
+import { Route as ApiWaRouteImport } from './routes/api.wa'
 import { Route as ApiOfferImageRouteImport } from './routes/api.offer-image'
 import { Route as ImgRouteImport } from './routes/img'
 import { Route as KoRouteImport } from './routes/ko'
@@ -44,6 +45,11 @@ const ApiOfferImageRoute = ApiOfferImageRouteImport.update({
 const ApiHitRoute = ApiHitRouteImport.update({
   id: '/api/hit',
   path: '/api/hit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWaRoute = ApiWaRouteImport.update({
+  id: '/api/wa',
+  path: '/api/wa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/api/hit': typeof ApiHitRoute
+  '/api/wa': typeof ApiWaRoute
   '/api/offer-image': typeof ApiOfferImageRoute
   '/img': typeof ImgRoute
   '/en': typeof EnRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/api/hit': typeof ApiHitRoute
+  '/api/wa': typeof ApiWaRoute
   '/api/offer-image': typeof ApiOfferImageRoute
   '/img': typeof ImgRoute
   '/en': typeof EnRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/api/hit': typeof ApiHitRoute
+  '/api/wa': typeof ApiWaRoute
   '/api/offer-image': typeof ApiOfferImageRoute
   '/img': typeof ImgRoute
   '/en': typeof EnRoute
@@ -119,14 +128,15 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/api/hit' | '/api/offer-image' | '/img' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
+  fullPaths: '/' | '/admin' | '/api/hit' | '/api/wa' | '/api/offer-image' | '/img' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/api/hit' | '/api/offer-image' | '/img' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
+  to: '/' | '/admin' | '/api/hit' | '/api/wa' | '/api/offer-image' | '/img' | '/en' | '/es' | '/ko' | '/ru' | '/robots.txt' | '/sitemap.xml'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/api/hit'
+    | '/api/wa'
     | '/api/offer-image'
     | '/img'
     | '/en'
@@ -141,6 +151,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   ApiHitRoute: typeof ApiHitRoute
+  ApiWaRoute: typeof ApiWaRoute
   ApiOfferImageRoute: typeof ApiOfferImageRoute
   ImgRoute: typeof ImgRoute
   EnRoute: typeof EnRoute
@@ -186,6 +197,13 @@ declare module '@tanstack/react-router' {
       path: '/api/hit'
       fullPath: '/api/hit'
       preLoaderRoute: typeof ApiHitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/wa': {
+      id: '/api/wa'
+      path: '/api/wa'
+      fullPath: '/api/wa'
+      preLoaderRoute: typeof ApiWaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -237,6 +255,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   ApiHitRoute: ApiHitRoute,
+  ApiWaRoute: ApiWaRoute,
   ApiOfferImageRoute: ApiOfferImageRoute,
   ImgRoute: ImgRoute,
   EnRoute: EnRoute,

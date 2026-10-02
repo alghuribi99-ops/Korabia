@@ -28,6 +28,8 @@ export type AdminData = {
     leadsRange: number;
     viewsTotal: number;
     viewsRange: number;
+    waTotal: number;
+    waRange: number;
     conversion: number;
   };
   viewsByDay: { day: string; n: number }[];
@@ -36,6 +38,8 @@ export type AdminData = {
   byCity: Bucket[];
   byDevice: Bucket[];
   byReferrer: Bucket[];
+  byWaCar: Bucket[];
+  byWaSource: Bucket[];
   leads: Lead[];
 };
 
@@ -55,6 +59,9 @@ const ENSURE_ATTEMPTS =
 /** A short password deserves a real brake, so guessing is rate limited. */
 const MAX_FAILURES = 8;
 const WINDOW = "-10 minutes";
+
+const ENSURE_WA =
+  "CREATE TABLE IF NOT EXISTS wa_clicks (id INTEGER PRIMARY KEY AUTOINCREMENT, source TEXT NOT NULL, offer_id INTEGER, car TEXT, lang TEXT, country TEXT, city TEXT, device TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))";
 
 const ENSURE_VIEWS =
   "CREATE TABLE IF NOT EXISTS page_views (id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, lang TEXT, country TEXT, city TEXT, region TEXT, tz TEXT, referrer TEXT, device TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')))";
@@ -97,6 +104,7 @@ export const loadAdminData = createServerFn({ method: "POST" })
     await DB.prepare("DELETE FROM admin_attempts").run();
 
     await DB.prepare(ENSURE_VIEWS).run();
+    await DB.prepare(ENSURE_WA).run();
     for (const column of ["city", "region", "tz"]) {
       try {
         await DB.prepare("ALTER TABLE page_views ADD COLUMN " + column + " TEXT").run();
@@ -130,6 +138,17 @@ export const loadAdminData = createServerFn({ method: "POST" })
       (
         await one<{ n: number }>(
           "SELECT COUNT(*) AS n FROM page_views WHERE created_at >= datetime('now', ?)",
+          since,
+        )
+      )?.n ?? 0;
+
+    // A WhatsApp click is the only moment the site can see an inquiry start;
+    // the conversation itself happens off the site and never reaches here.
+    const waTotal = (await one<{ n: number }>("SELECT COUNT(*) AS n FROM wa_clicks"))?.n ?? 0;
+    const waRange =
+      (
+        await one<{ n: number }>(
+          "SELECT COUNT(*) AS n FROM wa_clicks WHERE created_at >= datetime('now', ?)",
           since,
         )
       )?.n ?? 0;
@@ -181,6 +200,19 @@ export const loadAdminData = createServerFn({ method: "POST" })
       ),
     );
 
+    const byWaCar = bucket(
+      await many<{ key: string | null; n: number }>(
+        "SELECT car AS key, COUNT(*) AS n FROM wa_clicks WHERE created_at >= datetime('now', ?) AND car IS NOT NULL GROUP BY car ORDER BY n DESC LIMIT 10",
+        since,
+      ),
+    );
+    const byWaSource = bucket(
+      await many<{ key: string | null; n: number }>(
+        "SELECT source AS key, COUNT(*) AS n FROM wa_clicks WHERE created_at >= datetime('now', ?) GROUP BY source ORDER BY n DESC",
+        since,
+      ),
+    );
+
     const leads = await many<Lead>(
       "SELECT id, name, phone, country, category, model, budget, notes, lang, created_at FROM car_requests ORDER BY id DESC LIMIT 500",
     );
@@ -193,7 +225,11 @@ export const loadAdminData = createServerFn({ method: "POST" })
         leadsRange,
         viewsTotal,
         viewsRange,
-        conversion: viewsRange > 0 ? (leadsRange / viewsRange) * 100 : 0,
+        waTotal,
+        waRange,
+        // Both ways a visitor reaches out count, so the rate reflects the
+        // whole funnel rather than only the form nobody uses.
+        conversion: viewsRange > 0 ? ((leadsRange + waRange) / viewsRange) * 100 : 0,
       },
       viewsByDay,
       byLang,
@@ -201,6 +237,8 @@ export const loadAdminData = createServerFn({ method: "POST" })
       byCity,
       byDevice,
       byReferrer,
+      byWaCar,
+      byWaSource,
       leads,
     };
   });

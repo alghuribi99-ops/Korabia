@@ -2,7 +2,8 @@ import { useState, type FormEvent, type ReactNode } from "react";
 
 import { submitCarRequest } from "../../lib/api/requests.functions";
 import { getDict } from "../../site/content";
-import { whatsappLink, type Lang } from "../../site/types";
+import { type Lang } from "../../site/types";
+import { WhatsAppLink } from "./whatsapp-link";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -74,14 +75,14 @@ export function RequestForm({ lang }: { lang: Lang }) {
             <h3 className="k-display text-2xl md:text-3xl">{t.request.successTitle}</h3>
             <p className="k-body mt-4 text-[15px] text-[#F2F2EF]/70">{t.request.successBody}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={whatsappLink(summary)}
-                target="_blank"
-                rel="noopener noreferrer"
+              <WhatsAppLink
+                message={summary}
+                source="form-done"
+                lang={lang}
                 className="border border-[#1F3FB8] bg-[#1F3FB8] px-9 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-transparent hover:text-[#7D95E8]"
               >
                 {t.cta.whatsapp}
-              </a>
+              </WhatsAppLink>
               <button
                 type="button"
                 onClick={() => {
@@ -177,14 +178,14 @@ export function RequestForm({ lang }: { lang: Lang }) {
               >
                 {status === "sending" ? t.request.sending : t.request.submit}
               </button>
-              <a
-                href={whatsappLink(t.request.waGeneral)}
-                target="_blank"
-                rel="noopener noreferrer"
+              <WhatsAppLink
+                message={t.request.waGeneral}
+                source="form"
+                lang={lang}
                 className="k-underline relative text-[15px] text-[#F2F2EF]/80"
               >
                 {t.cta.whatsapp}
-              </a>
+              </WhatsAppLink>
             </div>
           </form>
         )}

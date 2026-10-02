@@ -45,6 +45,16 @@ const DEVICE_LABEL: Record<string, string> = {
   unknown: "غير معروف",
 };
 
+const WA_SOURCE_LABEL: Record<string, string> = {
+  offer: "بطاقة سيارة",
+  hero: "أعلى الصفحة",
+  bar: "الشريط السفلي",
+  form: "نموذج الطلب",
+  "form-done": "بعد إرسال الطلب",
+  footer: "التذييل",
+  other: "مكان آخر",
+};
+
 const REGION = new Intl.DisplayNames(["ar"], { type: "region" });
 
 function countryLabel(code: string) {
@@ -258,19 +268,48 @@ function Admin() {
           <OffersPanel password={password} />
         ) : (
           <>
-        <section className="mt-8 grid grid-cols-1 border border-[#DCDCD6] bg-white sm:grid-cols-2 lg:grid-cols-4">
-          <StatTile label="طلبات جديدة" value={nf.format(data.kpi.leadsRange)} sub={"خلال " + data.range + " يوم"} />
+        <section className="mt-8 grid grid-cols-1 border border-[#DCDCD6] bg-white sm:grid-cols-2 lg:grid-cols-3">
+          <StatTile
+            label="استفسارات واتساب"
+            value={nf.format(data.kpi.waRange)}
+            sub={"خلال " + data.range + " يوم"}
+          />
+          <StatTile label="طلبات النموذج" value={nf.format(data.kpi.leadsRange)} sub={"خلال " + data.range + " يوم"} />
           <StatTile label="زيارات" value={nf.format(data.kpi.viewsRange)} sub={"خلال " + data.range + " يوم"} />
           <StatTile
             label="معدل التحويل"
             value={data.kpi.conversion.toFixed(1) + "%"}
-            sub="زيارة تنتهي بطلب"
+            sub="زيارة تنتهي باستفسار"
           />
-          <StatTile label="إجمالي الطلبات" value={nf.format(data.kpi.leadsTotal)} sub="منذ إطلاق الموقع" />
+          <StatTile
+            label="إجمالي استفسارات واتساب"
+            value={nf.format(data.kpi.waTotal)}
+            sub="منذ تشغيل العدّاد"
+          />
+          <StatTile label="إجمالي طلبات النموذج" value={nf.format(data.kpi.leadsTotal)} sub="منذ إطلاق الموقع" />
         </section>
 
         <section className="mt-6 border border-[#DCDCD6] bg-white p-6 md:p-8">
           <DayColumns data={data.viewsByDay} label="الزيارات يومياً" />
+        </section>
+
+        <section className="mt-6 grid grid-cols-1 gap-px border border-[#DCDCD6] bg-[#DCDCD6] md:grid-cols-2">
+          <div className="bg-white p-6">
+            <BarList
+              title="أكثر السيارات استفساراً"
+              rows={data.byWaCar}
+              renderKey={(k) => k}
+              empty="ما ضغط أحد زر الواتساب على سيارة بعد."
+            />
+          </div>
+          <div className="bg-white p-6">
+            <BarList
+              title="من أي مكان في الصفحة"
+              rows={data.byWaSource}
+              renderKey={(k) => WA_SOURCE_LABEL[k] ?? k}
+              empty="ما فيه ضغطات بعد."
+            />
+          </div>
         </section>
 
         <section className="mt-6 grid grid-cols-1 gap-px border border-[#DCDCD6] bg-[#DCDCD6] md:grid-cols-2 xl:grid-cols-3">

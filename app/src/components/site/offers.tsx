@@ -8,7 +8,8 @@ import {
   type Fuel,
   type Transmission,
 } from "../../site/offer-labels";
-import { LANG_META, whatsappLink, type Lang } from "../../site/types";
+import { LANG_META, type Lang } from "../../site/types";
+import { WhatsAppLink } from "./whatsapp-link";
 import { PhotoViewer } from "./photo-viewer";
 
 const WINDOW_MS = 48 * 60 * 60 * 1000;
@@ -135,14 +136,16 @@ function OfferCard({ offer, lang }: { offer: Offer; lang: Lang }) {
 
         <div className="mt-auto">
           <Countdown offer={offer} label={o.endsIn} />
-          <a
-            href={whatsappLink(message)}
-            target="_blank"
-            rel="noopener noreferrer"
+          <WhatsAppLink
+            message={message}
+            source="offer"
+            lang={lang}
+            offerId={offer.id}
+            car={title}
             className="mt-5 block w-full bg-[#111619] py-3.5 text-center text-[14px] font-medium text-[#F2F2EF] transition-colors hover:bg-[#1F3FB8]"
           >
             {o.inquire}
-          </a>
+          </WhatsAppLink>
         </div>
       </div>
 

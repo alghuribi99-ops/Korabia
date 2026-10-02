@@ -1,5 +1,6 @@
 import { getDict } from "../../site/content";
-import { LANG_META, whatsappLink, type Lang } from "../../site/types";
+import { LANG_META, type Lang } from "../../site/types";
+import { WhatsAppLink } from "./whatsapp-link";
 
 export function Hero({ lang }: { lang: Lang }) {
   const t = getDict(lang);
@@ -59,14 +60,14 @@ export function Hero({ lang }: { lang: Lang }) {
               {rtl ? "←" : "→"}
             </span>
           </a>
-          <a
-            href={whatsappLink(t.request.waGeneral)}
-            target="_blank"
-            rel="noopener noreferrer"
+          <WhatsAppLink
+            message={t.request.waGeneral}
+            source="hero"
+            lang={lang}
             className="border border-[#F2F2EF]/60 bg-[#111619]/40 px-8 py-4 text-[15px] font-medium text-[#F2F2EF] backdrop-blur-sm transition-colors duration-300 hover:bg-[#111619]/70"
           >
             {t.cta.whatsapp}
-          </a>
+          </WhatsAppLink>
         </div>
       </div>
     </section>

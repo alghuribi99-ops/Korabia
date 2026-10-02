@@ -1,5 +1,6 @@
 import { getDict } from "../../site/content";
-import { CONTACT, LANG_META, NAV_HREFS, whatsappLink, type Lang } from "../../site/types";
+import { CONTACT, LANG_META, NAV_HREFS, type Lang } from "../../site/types";
+import { WhatsAppLink } from "./whatsapp-link";
 import { LangSwitch } from "./lang-switch";
 import { Registration } from "./registration";
 import { BrandMark } from "./nav";
@@ -17,14 +18,14 @@ export function SiteFooter({ lang }: { lang: Lang }) {
               <span className="k-latin text-lg font-semibold tracking-[0.14em]">KORABIA</span>
             </div>
             <p className="k-body mt-5 text-[15px] text-[#F2F2EF]/65">{t.footer.tagline}</p>
-            <a
-              href={whatsappLink(t.request.waGeneral)}
-              target="_blank"
-              rel="noopener noreferrer"
+            <WhatsAppLink
+              message={t.request.waGeneral}
+              source="footer"
+              lang={lang}
               className="mt-7 inline-block border border-[#F2F2EF]/40 px-7 py-3.5 text-[15px] font-medium transition-all hover:border-[#F2F2EF] hover:shadow-[inset_0_0_0_1px_#F2F2EF]"
             >
               {t.cta.whatsapp}
-            </a>
+            </WhatsAppLink>
             <div className="mt-9">
               <h3 className="k-latin text-sm text-[#F2F2EF]/45">{t.footer.languagesHeading}</h3>
               <div className="mt-4">
@@ -86,14 +87,14 @@ export function MobileActionBar({ lang }: { lang: Lang }) {
   const t = getDict(lang);
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-px border-t border-[#111619]/15 bg-[#DCDCD6] lg:hidden">
-      <a
-        href={whatsappLink(t.request.waGeneral)}
-        target="_blank"
-        rel="noopener noreferrer"
+      <WhatsAppLink
+        message={t.request.waGeneral}
+        source="bar"
+        lang={lang}
         className="bg-[#F2F2EF] py-4 text-center text-sm font-medium text-[#111619]"
       >
         {t.cta.whatsapp}
-      </a>
+      </WhatsAppLink>
       <a href="#request" className="bg-[#1F3FB8] py-4 text-center text-sm font-medium text-white">
         {t.cta.request}
       </a>
