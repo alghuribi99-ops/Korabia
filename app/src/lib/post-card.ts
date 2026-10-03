@@ -65,7 +65,11 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-/** Fills the box without distorting the car. */
+/**
+ * Fills the box without distorting the car. Covering overflows the box on one
+ * axis by definition, so it has to be clipped: letting the photo bleed below
+ * the box put a pale band under it and the white title landed on top of that.
+ */
 function cover(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
@@ -77,8 +81,15 @@ function cover(
   const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
   const dw = img.naturalWidth * scale;
   const dh = img.naturalHeight * scale;
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x, y, w, h);
+  ctx.clip();
   ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+  ctx.restore();
 }
+
+const ARABIC = /[\u0600-\u06FF\u0750-\u077F]/;
 
 /** Trims a run with no break opportunity until it fits, rather than bleeding off the edge. */
 function clamp(ctx: CanvasRenderingContext2D, text: string, max: number) {
@@ -231,8 +242,13 @@ export async function drawPostCard(offer: Offer, size: PostSize): Promise<Blob> 
   ctx.textAlign = "right";
   const right = L.w - L.pad;
 
+  const title = titleOf(offer);
+  // A Latin-only name under direction:"rtl" gets its trailing run moved —
+  // "Palisade ... 7-Seater" came out as "Seater-7". Set the base direction from
+  // the text itself and keep it flush right either way.
+  ctx.direction = ARABIC.test(title) ? "rtl" : "ltr";
   ctx.font = '600 ' + L.title + 'px "IBM Plex Sans Arabic", system-ui, sans-serif';
-  const lines = wrap(ctx, titleOf(offer), L.w - L.pad * 2, 2);
+  const lines = wrap(ctx, title, L.w - L.pad * 2, 2);
 
   const titleLead = L.title * 1.28;
   const gapTitlePrice = L.pad * 0.45;
