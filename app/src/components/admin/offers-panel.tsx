@@ -7,6 +7,7 @@ import {
   type Offer,
 } from "../../lib/api/offers.functions";
 import { readListing } from "../../lib/api/read-listing.functions";
+import { PostStudio } from "./post-studio";
 import { COLORS, FUELS, OFFER_TEXT, TRANSMISSIONS } from "../../site/offer-labels";
 
 const AR = OFFER_TEXT.ar;
@@ -57,6 +58,7 @@ const field =
 
 export function OffersPanel({ password }: { password: string }) {
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [posting, setPosting] = useState<Offer | null>(null);
   const [values, setValues] = useState(EMPTY);
   const [photos, setPhotos] = useState<string[]>([]);
   const [busy, setBusy] = useState<"idle" | "loading" | "saving" | "uploading">("idle");
@@ -356,6 +358,9 @@ export function OffersPanel({ password }: { password: string }) {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
+                    <button type="button" onClick={() => setPosting(offer)} className="border border-[#1F3FB8] px-3 py-1.5 text-[12px] text-[#1F3FB8] hover:bg-[#1F3FB8] hover:text-white">
+                      منشور
+                    </button>
                     <button type="button" onClick={() => void act(offer.id, "extend")} className="border border-[#DCDCD6] px-3 py-1.5 text-[12px] hover:border-[#111619]">
                       جدد ٤٨ ساعة
                     </button>
@@ -377,6 +382,8 @@ export function OffersPanel({ password }: { password: string }) {
           </ul>
         )}
       </section>
+
+      {posting ? <PostStudio offer={posting} onClose={() => setPosting(null)} /> : null}
     </div>
   );
 }
